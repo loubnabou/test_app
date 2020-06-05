@@ -1,9 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tesapp/widgets/clicky_button.dart';
 
 import 'forms.dart';
 import 'importFrancais.dart';
-class importer extends StatelessWidget {
+class Importer extends StatelessWidget {
+  final FirebaseUser user;
+  Importer({this.user});
   @override
   Widget build(BuildContext context) {
 
@@ -39,7 +42,7 @@ class importer extends StatelessWidget {
                    color: Colors.green,
                    onPressed: () {Navigator
                    .push(context, MaterialPageRoute(
-                     builder: (context)=>Insert(),
+                     builder: (context)=>Insert(user: user,),
                    ),
                      );
                    },
@@ -54,7 +57,10 @@ class importer extends StatelessWidget {
                          fontSize: 22),
                    ),
                    color: Colors.green,
-                   onPressed: () {},
+                   onPressed: () {
+
+                     
+                   },
                  ),
 
                ],

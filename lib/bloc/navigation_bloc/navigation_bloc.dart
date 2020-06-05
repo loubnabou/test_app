@@ -1,8 +1,7 @@
 import 'package:bloc/bloc.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:tesapp/pages/importer.dart';
-import 'package:tesapp/pages/resultats.dart';
-import 'package:tesapp/pages/table.dart';
+import 'package:tesapp/pages/import.dart';
+/*import 'package:tesapp/pages/resultats.dart';
+import 'package:tesapp/pages/importFrancais.dart';
 
 
 enum NavigationEvents {
@@ -15,7 +14,7 @@ abstract class NavigationStates {}
 
 class NavigationBloc extends Bloc<NavigationEvents, NavigationStates> {
   @override
-  NavigationStates get initialState => table();
+  NavigationStates get initialState => Table();
 
   @override
   Stream<NavigationStates> mapEventToState(NavigationEvents event) async* {
@@ -24,11 +23,11 @@ class NavigationBloc extends Bloc<NavigationEvents, NavigationStates> {
         yield Importer();
         break;
       case NavigationEvents.MyAccountClickedEvent:
-        yield table();
+        yield Table();
         break;
       case NavigationEvents.MyOrdersClickedEvent:
         yield resultats();
         break;
     }
   }
-}
+}*/

@@ -16,16 +16,21 @@ class AuthService {
   }
 
   // Email & Password Sign Up
-  Future<String> createUserWithEmailAndPassword(String email, String password,
+  Future<FirebaseUser> createUserWithEmailAndPassword(String email, String password,
       String name) async {
-    final authResult = await _firebaseAuth.createUserWithEmailAndPassword(
+    final AuthResult authResult = await _firebaseAuth.createUserWithEmailAndPassword(
       email: email,
-      password: password,
+      password: password
     );
+    final FirebaseUser user = authResult.user;
 
+    assert (user != null);
+    assert (await user.getIdToken() != null);
+    
+    print('signUpEmail succeeded: $user');
     // Update the username
     await updateUserName(name, authResult.user);
-    return authResult.user.uid;
+    return user;
   }
 
   Future updateUserName(String name, FirebaseUser currentUser) async {
@@ -36,10 +41,20 @@ class AuthService {
   }
 
   // Email & Password Sign In
-  Future<String> signInWithEmailAndPassword(String email,
+  Future<FirebaseUser> signInWithEmailAndPassword(String email,
       String password) async {
-    return (await _firebaseAuth.signInWithEmailAndPassword(
-        email: email, password: password)).user.uid;
+    AuthResult result = await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
+    final FirebaseUser user = result.user;
+
+    assert(user != null);
+    assert(await user.getIdToken() != null);
+
+    final FirebaseUser currentUser = await _firebaseAuth.currentUser();
+    assert(user.uid == currentUser.uid);
+
+    print('signInEmail succeeded: $user');
+
+    return user;
   }
 
   // Sign Out
@@ -59,7 +74,6 @@ class AuthService {
 
   Future convertUserWithEmail(String email, String password, String name) async {
     final currentUser = await _firebaseAuth.currentUser();
-
     final credential = EmailAuthProvider.getCredential(email: email, password: password);
     await currentUser.linkWithCredential(credential);
     await updateUserName(name, currentUser);

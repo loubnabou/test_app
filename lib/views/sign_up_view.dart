@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tesapp/services/auth_service.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -63,13 +64,13 @@ class _SignUpViewState extends State<SignUpView> {
         final auth = Provider.of(context).auth;
         switch (authFormType) {
           case AuthFormType.signIn:
-            await auth.signInWithEmailAndPassword(_email, _password);
-            Navigator.of(context).pushReplacementNamed('/home');
+            FirebaseUser result = await auth.signInWithEmailAndPassword(_email, _password);
+            Navigator.of(context).pushReplacementNamed('/home', arguments: result);
             break;
           case AuthFormType.signUp:
-            await auth.createUserWithEmailAndPassword(
+            FirebaseUser result = await auth.createUserWithEmailAndPassword(
                 _email, _password, _name);
-            Navigator.of(context).pushReplacementNamed('/home');
+            Navigator.of(context).pushReplacementNamed('/home', arguments: result);
             break;
           case AuthFormType.reset:
             await auth.sendPasswordResetEmail(_email);
@@ -79,8 +80,8 @@ class _SignUpViewState extends State<SignUpView> {
             });
             break;
           case AuthFormType.anonymous:
-            await auth.singInAnonymously();
-            Navigator.of(context).pushReplacementNamed('/home');
+            var result = await auth.singInAnonymously();
+            Navigator.of(context).pushReplacementNamed('/home', arguments: result);
             break;
           case AuthFormType.convert:
             await auth.convertUserWithEmail(_email, _password, _name);
