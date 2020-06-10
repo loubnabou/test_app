@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tesapp/widgets/clicky_button.dart';
 //
-import 'candidat.dart';
-import 'consultant.dart';
+//import 'candidat.dart';
+//import 'consultant.dart';
 //
 class premierePage extends StatelessWidget{
   @override
@@ -23,11 +23,11 @@ class premierePage extends StatelessWidget{
                   fontSize: 22),
             ),
             color: Colors.deepPurpleAccent,
-            onPressed: () {Navigator
+            onPressed: () {/*Navigator
                 .push(context, MaterialPageRoute(
               builder: (context)=>candidat(),
             ),
-            );
+            );*/
             },
           ),
           SizedBox(height: 16),//bach ndir espace binathome
@@ -40,12 +40,12 @@ class premierePage extends StatelessWidget{
                   fontSize: 22),
             ),
             color: Colors.deepPurpleAccent,
-            onPressed: () {
+            onPressed: () {/*
               Navigator
                   .push(context, MaterialPageRoute(
                 builder: (context)=>consultant(),
               ),
-              );
+              );*/
             },
           ),
 //

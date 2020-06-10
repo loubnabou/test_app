@@ -1,20 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:tesapp/pages/home.dart';
 import 'package:tesapp/pages/testDetails.dart';
 
-import 'forms.dart';
-
-class Table extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return new MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Insert(),
-    );
-  }
-}
+import 'formsFrancais.dart';
 
 class CourseApp extends StatelessWidget {
   final FirebaseUser user;
@@ -26,6 +16,18 @@ class CourseApp extends StatelessWidget {
       appBar: AppBar(
         title: Text("Les Tests"),
         backgroundColor: Colors.deepPurpleAccent,
+        actions: <Widget>[
+          IconButton(
+              icon: Icon(Icons.home),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Home(result: user),
+                  ),
+                );
+              })
+        ],
       ),
       body: StreamBuilder(
           stream: Firestore.instance.collection("Coachs").snapshots(),

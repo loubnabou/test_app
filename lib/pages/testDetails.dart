@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'forms.dart';
+import 'formsFrancais.dart';
 
 class TestDetails extends StatefulWidget {
   final Test test;

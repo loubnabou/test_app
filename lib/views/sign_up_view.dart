@@ -1,7 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tesapp/pages/candidate/candidateContinueInfo.dart';
+import 'package:tesapp/pages/candidate/candidateHome.dart';
+import 'package:tesapp/pages/home.dart';
 import 'package:tesapp/services/auth_service.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:tesapp/views/idCoachPage.dart';
 import 'package:tesapp/widgets/provider_widget.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
@@ -28,6 +33,21 @@ class _SignUpViewState extends State<SignUpView> {
 
   final formKey = GlobalKey<FormState>();
   String _email, _password, _name, _warning;
+  TextEditingController _c;
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _c = new TextEditingController();
+  }
+
+  void showInSnackBar(String value) {
+    _scaffoldKey.currentState
+        .showSnackBar(new SnackBar(content: new Text(value)));
+  }
 
   void switchFormState(String state) {
     formKey.currentState.reset();
@@ -64,13 +84,43 @@ class _SignUpViewState extends State<SignUpView> {
         final auth = Provider.of(context).auth;
         switch (authFormType) {
           case AuthFormType.signIn:
-            FirebaseUser result = await auth.signInWithEmailAndPassword(_email, _password);
-            Navigator.of(context).pushReplacementNamed('/home', arguments: result);
+            /*final prefs = await SharedPreferences.getInstance();
+            final key = 'userType';
+            final userType = prefs.getString(key) ?? null;
+            print(userType);
+            if (userType == 'candidate') {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CandidateContinueInfo(),
+                ),
+              );
+            }*/
+            //Navigator.of(context).pushReplacementNamed('/home', arguments: result);
+            
+              FirebaseUser result =
+                  await auth.signInWithEmailAndPassword(_email, _password);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      IDOfCoach(user: result, actionType: 'sign_in'),
+                ),
+              );
+            
             break;
           case AuthFormType.signUp:
             FirebaseUser result = await auth.createUserWithEmailAndPassword(
                 _email, _password, _name);
-            Navigator.of(context).pushReplacementNamed('/home', arguments: result);
+            print(result);
+            //Navigator.of(context).pushReplacementNamed('/home', arguments: result);
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    IDOfCoach(user: result, actionType: 'sign_up'),
+              ),
+            );
             break;
           case AuthFormType.reset:
             await auth.sendPasswordResetEmail(_email);
@@ -81,7 +131,8 @@ class _SignUpViewState extends State<SignUpView> {
             break;
           case AuthFormType.anonymous:
             var result = await auth.singInAnonymously();
-            Navigator.of(context).pushReplacementNamed('/home', arguments: result);
+            Navigator.of(context)
+                .pushReplacementNamed('/home', arguments: result);
             break;
           case AuthFormType.convert:
             await auth.convertUserWithEmail(_email, _password, _name);
@@ -105,6 +156,7 @@ class _SignUpViewState extends State<SignUpView> {
     if (authFormType == AuthFormType.anonymous) {
       submit();
       return Scaffold(
+          key: _scaffoldKey,
           resizeToAvoidBottomPadding: false,
           backgroundColor: primaryColor,
           body: Column(
@@ -121,6 +173,7 @@ class _SignUpViewState extends State<SignUpView> {
           ));
     } else {
       return Scaffold(
+        key: _scaffoldKey,
         resizeToAvoidBottomPadding: false,
         body: Container(
           color: primaryColor,
@@ -258,7 +311,7 @@ class _SignUpViewState extends State<SignUpView> {
       enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(color: Colors.white, width: 0.0)),
       contentPadding:
-      const EdgeInsets.only(left: 14.0, bottom: 10.0, top: 10.0),
+          const EdgeInsets.only(left: 14.0, bottom: 10.0, top: 10.0),
     );
   }
 
@@ -291,9 +344,8 @@ class _SignUpViewState extends State<SignUpView> {
       Container(
         width: MediaQuery.of(context).size.width * 0.7,
         child: RaisedButton(
-
           shape:
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
           color: Colors.white,
           textColor: primaryColor,
           child: Padding(
@@ -313,6 +365,22 @@ class _SignUpViewState extends State<SignUpView> {
         ),
         onPressed: () {
           switchFormState(_newFormState);
+        },
+      ),
+      FlatButton(
+        child: Text(
+          'You are candidate? click Now',
+          style: TextStyle(color: Colors.white),
+        ),
+        onPressed: () {
+          Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      CandidateContinueInfo(),
+                ),
+              );
+          
         },
       ),
       buildSocialIcons(_showSocial),
@@ -345,7 +413,6 @@ class _SignUpViewState extends State<SignUpView> {
             color: Colors.white,
           ),
           SizedBox(height: 10),
-
         ],
       ),
       visible: visible,
