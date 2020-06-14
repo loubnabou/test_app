@@ -70,13 +70,13 @@ class HomeController extends StatelessWidget {
                 String userType =
                     snapshotFuture.data.getString('userType') ?? null;
                 if (userType == 'candidate') {
-                  String candidateEmail =
+                  /*String candidateEmail =
                       snapshotFuture.data.getString('userEmail') ?? null;
                   if (candidateEmail != null)
                     return CandidateHome(
                       user: candidateEmail,
                     );
-                  else
+                  else*/
                     return CandidateContinueInfo();
                 } else if (userType == 'coach') {
                   return StreamBuilder<FirebaseUser>(

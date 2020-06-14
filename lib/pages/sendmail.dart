@@ -39,4 +39,37 @@ class SendEmails {
 
     return msgResponse;
   }
+
+  static Future<String> sendResultMail(
+      candidateEmail, String from, String detailsMSG) async {
+    String msgResponse;
+    String body = '<h2>Bonjour,</h2>' +
+        '<p>I would like to inform you that you finished test and this is Info about you</p>' +
+        '<center><h2>$detailsMSG</h2></center>' +
+        '<center><h3>Best Wishes & Good Bye 😍</h3></center>' +
+        '<center><h4>© 2020 Company Inc.</h4></center>';
+
+    String username = 'team.mailer01';
+    String password = '01111953134';
+
+    var options = new GmailSmtpOptions()
+      ..username = username
+      ..password = password;
+
+    var emailTransport = new SmtpTransport(options);
+
+    // create our mail
+    final message = Envelope()
+      ..fromName = from
+      ..recipients.add(candidateEmail)
+      ..subject = 'Results 😍'
+      ..html = body;
+
+    emailTransport
+        .send(message)
+        .then((envelope) => msgResponse = 'sent')
+        .catchError((error) => msgResponse = error);
+
+    return msgResponse;
+  }
 }

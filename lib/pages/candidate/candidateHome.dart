@@ -2,8 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tesapp/pages/candidate/checkKey.dart';
+import 'package:tesapp/pages/candidate/welcomeScreen.dart';
 import 'package:tesapp/services/auth_service.dart';
 import 'package:tesapp/views/first_view.dart';
+import 'package:tesapp/views/sign_up_view.dart';
 
 class CandidateHome extends StatelessWidget {
   final _formKey = new GlobalKey<FormState>();
@@ -17,6 +19,7 @@ class CandidateHome extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("Welcome"),
+        backgroundColor: primaryColor,
       ),
       drawer: Drawer(
         child: ListView(
@@ -64,7 +67,8 @@ class CandidateHome extends StatelessWidget {
             Menu(Icons.assignment_turned_in, 'Tests',
                 () => _showDialog(context)),
             Menu(Icons.assignment, 'Resultats', () => {}),
-            Menu(Icons.build, 'Generer', () => {}),
+            Menu(Icons.wallpaper, 'Welcome', () => WelcomeCandidateScreen(email: user)),
+            //Menu(Icons.build, 'Generer', () => {}),
             Menu(Icons.exit_to_app, 'Log-Out', () async {
               final prefs = await SharedPreferences.getInstance();
               final key2 = 'userEmail';
@@ -99,7 +103,7 @@ class CandidateHome extends StatelessWidget {
                     },
                     autofocus: true,
                     decoration: InputDecoration(
-                        labelText: 'Password Key', hintText: 'eJkN=='),
+                        labelText: 'Password Key'),
                   ),
                 )
               ],

@@ -37,6 +37,7 @@ dependencies:
   cloud_firestore: ^0.13.6
   shared_preferences: ^0.5.7+3
   mailer2: ^1.2.5
+  fl_chart: ^0.10.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -56,6 +57,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/
+    - assets/images/welcomeScreens/
   #  - images/a_dot_ham.jpeg
   #  - assets/images/logo-RAHMA.png
   #  - assets/images/hh.jpg
