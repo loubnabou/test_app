@@ -25,17 +25,19 @@ class SendEmails {
 
     var emailTransport = new SmtpTransport(options);
 
-    // create our mail
-    final message = Envelope()
-      ..fromName = from
-      ..recipients = emails
-      ..subject = 'New Test Added 😍'
-      ..html = body;
+    emails.forEach((email) {
+      // create our mail
+      final message = Envelope()
+        ..fromName = from
+        ..recipients.add(email)
+        ..subject = 'New Test Added 😍'
+        ..html = body;
 
-    emailTransport
-        .send(message)
-        .then((envelope) => msgResponse = 'sent')
-        .catchError((error) => msgResponse = error);
+      emailTransport
+          .send(message)
+          .then((envelope) => msgResponse = 'sent')
+          .catchError((error) => msgResponse = error);
+    });
 
     return msgResponse;
   }

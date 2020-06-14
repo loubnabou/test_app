@@ -210,66 +210,72 @@ class _FrancaisTestCarouselState extends State<FrancaisTestCarousel> {
                                 fontWeight: FontWeight.bold, fontSize: 20.0),
                           )),
                     ),
-                    ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: widget.francaisTest.answers.length,
-                        itemBuilder: (ctx, indexVal) {
-                          /*testQuestionAnswer.add(new TestQuestionAnswer(
-                              questionAnswer: widget.test.answers[indexVal]));*/
-
-                          bool selectedAnswer = ((listOfTestQuestionAnswer[
-                                  currentpage])[indexVal])
-                              .isSelected;
-                          return Card(
-                            elevation: 20.0,
-                            color: selectedAnswer
-                                ? isLastQuestion
-                                    ? Colors.red[700]
-                                    : Colors.blue[500]
-                                : Colors.white,
-                            child: ListTile(
-                              title: Text(
-                                (indexVal + 1).toString() +
-                                    ". " +
-                                    widget.francaisTest.answers[indexVal],
-                                style: TextStyle(
-                                    fontSize: 17.0,
-                                    color: selectedAnswer
-                                        ? Colors.white
-                                        : Colors.black,
-                                    fontWeight: selectedAnswer
-                                        ? FontWeight.bold
-                                        : FontWeight.normal),
-                              ),
-                              onTap: () {
-                                for (int i = 0;
-                                    i < widget.francaisTest.numOfTestAnswers;
-                                    i++) {
-                                  if (indexVal == i) {
-                                    ((listOfTestQuestionAnswer[currentpage])[i])
-                                        .isSelected = true;
-                                  } else {
-                                    ((listOfTestQuestionAnswer[currentpage])[i])
-                                        .isSelected = false;
-                                  }
-                                }
-                                setState(() {
-                                  listOfTestQuestionAnswer[currentpage] =
-                                      listOfTestQuestionAnswer[currentpage];
-                                  listOfChoisesFrancaisAnswers[currentpage] =
-                                      (widget.francaisTest.answers[indexVal])
-                                          .toLowerCase();
-                                  answersDetailsFR[
-                                      'Q' + (currentpage + 1).toString()] = {
-                                    '${(widget.francaisTest.answers[indexVal]).toLowerCase()}':
-                                        indexVal + 1
-                                  };
-                                });
-                              },
-                            ),
-                          );
-                        }),
                     Expanded(
+                      flex: 4,
+                      child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: widget.francaisTest.answers.length,
+                          itemBuilder: (ctx, indexVal) {
+                            /*testQuestionAnswer.add(new TestQuestionAnswer(
+                                questionAnswer: widget.test.answers[indexVal]));*/
+
+                            bool selectedAnswer = ((listOfTestQuestionAnswer[
+                                    currentpage])[indexVal])
+                                .isSelected;
+                            return Card(
+                              elevation: 20.0,
+                              color: selectedAnswer
+                                  ? isLastQuestion
+                                      ? Colors.red[700]
+                                      : Colors.blue[500]
+                                  : Colors.white,
+                              child: ListTile(
+                                title: Text(
+                                  (indexVal + 1).toString() +
+                                      ". " +
+                                      widget.francaisTest.answers[indexVal],
+                                  style: TextStyle(
+                                      fontSize: 17.0,
+                                      color: selectedAnswer
+                                          ? Colors.white
+                                          : Colors.black,
+                                      fontWeight: selectedAnswer
+                                          ? FontWeight.bold
+                                          : FontWeight.normal),
+                                ),
+                                onTap: () {
+                                  for (int i = 0;
+                                      i < widget.francaisTest.numOfTestAnswers;
+                                      i++) {
+                                    if (indexVal == i) {
+                                      ((listOfTestQuestionAnswer[currentpage])[
+                                              i])
+                                          .isSelected = true;
+                                    } else {
+                                      ((listOfTestQuestionAnswer[currentpage])[
+                                              i])
+                                          .isSelected = false;
+                                    }
+                                  }
+                                  setState(() {
+                                    listOfTestQuestionAnswer[currentpage] =
+                                        listOfTestQuestionAnswer[currentpage];
+                                    listOfChoisesFrancaisAnswers[currentpage] =
+                                        (widget.francaisTest.answers[indexVal])
+                                            .toLowerCase();
+                                    answersDetailsFR[
+                                        'Q' + (currentpage + 1).toString()] = {
+                                      '${(widget.francaisTest.answers[indexVal]).toLowerCase()}':
+                                          indexVal + 1
+                                    };
+                                  });
+                                },
+                              ),
+                            );
+                          }),
+                    ),
+                    Expanded(
+                      flex: 1,
                         child: Padding(
                       padding: EdgeInsets.symmetric(vertical: 15.0),
                       child: RaisedButton(
@@ -317,7 +323,7 @@ class _FrancaisTestCarouselState extends State<FrancaisTestCarousel> {
                                       // finish the test
                                       print(answersDetailsFR);
                                       print(widget.answersDetailsAR);
-                                      
+
                                       CandidateTestAnswer candidateTestAnswer = new CandidateTestAnswer(
                                           email: widget.email,
                                           testID: widget.invitationKey.testID,
@@ -351,7 +357,7 @@ class _FrancaisTestCarouselState extends State<FrancaisTestCarousel> {
                                           candidateTestAnswer.toJson());
 
                                       // update CandidatesKey
-                                    updateCandidatesKey().then((value) {
+                                      updateCandidatesKey().then((value) {
                                         if (value == true) {
                                           showInSnackBar(
                                               "Merci! you will re-direct to see your results");
@@ -489,14 +495,14 @@ class CandidateTestAnswer {
           'numOfQuestions': numOfArabeQuestions,
           'totalQuestionsEachAnsAR': totalQuestionsEachAnsAR,
           'Answers': arabeAnswers,
-          'AnswersDetails' : ansDetailsAR
+          'AnswersDetails': ansDetailsAR
         },
         'Francais': {
           'numOfAnswers': numOfFrancaisAnswers,
           'numOfQuestions': numOfFrancaisQuestions,
           'totalQuestionsEachAnsFR': totalQuestionsEachAnsFR,
           'Answers': francaisAnswers,
-          'AnswersDetails' : ansDetailsFR
+          'AnswersDetails': ansDetailsFR
         }
       }
     };
