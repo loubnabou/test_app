@@ -102,12 +102,12 @@ class _TestInvitationState extends State<TestInvitation> {
                 final msg = SendEmails.sendMail(
                     widget.emailsList, user.email, key);
                 msg.then((value) {
-                  showInSnackBar('Message sent successfully to ${widget.emailsList[i]}');
+                  showInSnackBar('Message sent successfully to ${widget.emailsList[i]}', widget.emailsList.length);
                 }).catchError((error) => showInSnackBar(
-                    'There are some errors happen, please try again'));
+                    'There are some errors happen, please try again', 1));
               }
 
-              Timer(const Duration(milliseconds: 1500), onClose);
+              Timer(Duration(milliseconds: widget.emailsList.length * 1500), onClose);
             }),
       ),
     );
@@ -124,10 +124,10 @@ class _TestInvitationState extends State<TestInvitation> {
     );
   }
 
-  void showInSnackBar(String value) {
+  void showInSnackBar(String value, int size) {
     _scaffoldKey.currentState.showSnackBar(new SnackBar(
       content: new Text(value),
-      duration: const Duration(milliseconds: 800),
+      duration: Duration(milliseconds: size*800),
     ));
   }
 }

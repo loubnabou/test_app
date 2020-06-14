@@ -72,69 +72,74 @@ class _ArabeCandidateTestState extends State<ArabeCandidateTest> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _scaffoldKey,
-      backgroundColor: Colors.white60,
-      appBar: AppBar(
-        title: Text("الأختبار"),
-        automaticallyImplyLeading: false,
-      ),
-      body: widget.isFirstTime
-          ? FutureBuilder<QuerySnapshot>(
-              future: Firestore.instance.collection("Coachs").getDocuments(),
-              builder: (BuildContext context,
-                  AsyncSnapshot<QuerySnapshot> snapshot) {
-                switch (snapshot.connectionState) {
-                  case ConnectionState.waiting:
-                    return Center(child: CircularProgressIndicator());
-                  default:
-                    if (snapshot.hasError)
-                      return Center(child: Text('Error: ${snapshot.error}'));
-                    else {
-                      Widget msgWidget;
-                      int counterTests = 0;
-                      for (int i = 0; i < snapshot.data.documents.length; i++) {
-                        if (counterTests == 2) break;
+    return SafeArea(
+      child: Scaffold(
+        key: _scaffoldKey,
+        backgroundColor: Colors.white60,
+        appBar: AppBar(
+          title: Text("الأختبار"),
+          automaticallyImplyLeading: false,
+        ),
+        body: widget.isFirstTime
+            ? FutureBuilder<QuerySnapshot>(
+                future: Firestore.instance.collection("Coachs").getDocuments(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.waiting:
+                      return Center(child: CircularProgressIndicator());
+                    default:
+                      if (snapshot.hasError)
+                        return Center(child: Text('Error: ${snapshot.error}'));
+                      else {
+                        Widget msgWidget;
+                        int counterTests = 0;
+                        for (int i = 0;
+                            i < snapshot.data.documents.length;
+                            i++) {
+                          if (counterTests == 2) break;
 
-                        var a = snapshot.data.documents[i];
-                        Test tempTest = Test.fromJson(a.data);
-                        if (tempTest.testID == widget.invitationKey.testID) {
-                          if (tempTest.language == 'ar') {
-                            counterTests++;
-                            arabeTest = tempTest;
+                          var a = snapshot.data.documents[i];
+                          Test tempTest = Test.fromJson(a.data);
+                          if (tempTest.testID == widget.invitationKey.testID) {
+                            if (tempTest.language == 'ar') {
+                              counterTests++;
+                              arabeTest = tempTest;
+                            } else {
+                              counterTests++;
+                              francaisTest = tempTest;
+                            }
+                            msgWidget = ArabeTestCarousel(
+                              arabeTest: arabeTest,
+                              isFirstTime: widget.isFirstTime,
+                              invitationKey: widget.invitationKey,
+                              francaisTest: francaisTest,
+                              email: widget.email,
+                              scaffoldKey: _scaffoldKey,
+                            );
                           } else {
-                            counterTests++;
-                            francaisTest = tempTest;
+                            msgWidget = Center(
+                              child: Text(
+                                  "Test may be not approved yet, check again after some time"),
+                            );
                           }
-                          msgWidget = ArabeTestCarousel(
-                            arabeTest: arabeTest,
-                            isFirstTime: widget.isFirstTime,
-                            invitationKey: widget.invitationKey,
-                            francaisTest: francaisTest,
-                            email: widget.email,
-                            scaffoldKey: _scaffoldKey,
-                          );
-                        } else {
-                          msgWidget = Center(
-                            child: Text(
-                                "Test may be not approved yet, check again after some time"),
-                          );
                         }
+                        return msgWidget;
                       }
-                      return msgWidget;
-                    }
-                }
-              },
-            )
-          : ArabeTestCarousel(
-              arabeTest: widget.arabeTest,
-              isFirstTime: widget.isFirstTime,
-              invitationKey: widget.invitationKey,
-              listOfChoisesFrancaisAnswers: widget.listOfChoisesFrancaisAnswers,
-              answersDetailsFR: widget.answersDetailsFR,
-              email: widget.email,
-              scaffoldKey: _scaffoldKey,
-            ),
+                  }
+                },
+              )
+            : ArabeTestCarousel(
+                arabeTest: widget.arabeTest,
+                isFirstTime: widget.isFirstTime,
+                invitationKey: widget.invitationKey,
+                listOfChoisesFrancaisAnswers:
+                    widget.listOfChoisesFrancaisAnswers,
+                answersDetailsFR: widget.answersDetailsFR,
+                email: widget.email,
+                scaffoldKey: _scaffoldKey,
+              ),
+      ),
     );
   }
 }
@@ -205,12 +210,14 @@ class _ArabeTestCarouselState extends State<ArabeTestCarousel> {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
     return Center(
       child: Card(
         elevation: 10.0,
         child: Container(
-          width: MediaQuery.of(context).size.width * 0.85,
-          height: MediaQuery.of(context).size.height * 0.57,
+          width: width * 0.85,
+          height: height * 0.57,
           child: PageView.builder(
             controller: _testArabeQuestionsPageController,
             scrollDirection: Axis.horizontal,
@@ -241,8 +248,8 @@ class _ArabeTestCarouselState extends State<ArabeTestCarousel> {
                                 fontWeight: FontWeight.bold, fontSize: 20.0),
                           )),
                     ),
-                    Expanded(
-                      flex: 4,
+                    Container(
+                      height: height * 0.41,
                       child: ListView.builder(
                           shrinkWrap: true,
                           itemCount: widget.arabeTest.answers.length,
@@ -304,8 +311,8 @@ class _ArabeTestCarouselState extends State<ArabeTestCarousel> {
                             );
                           }),
                     ),
-                    Expanded(
-                        flex: 1,
+                    Container(
+                        height: height * 0.41 * 0.25,
                         child: Padding(
                           padding: EdgeInsets.symmetric(vertical: 15.0),
                           child: RaisedButton(
