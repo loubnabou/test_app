@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:tesapp/pages/formsFrancais.dart';
 import 'package:tesapp/pages/invitation_candidates.dart';
 import 'package:tesapp/pages/invitation_candidates2.dart';
 import 'package:tesapp/pages/les_candidates.dart';
@@ -26,71 +28,167 @@ class Home extends StatelessWidget {
 }
 
 class MyWidget extends StatelessWidget {
-  
   final FirebaseUser user;
   MyWidget({this.user});
+  
   @override
   Widget build(BuildContext context) {
+    final orientation = MediaQuery.of(context).orientation;
     final size = MediaQuery.of(context)
         .size; // pour eviter wahd l'erreur dyla mediaquery
     return new MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: new Scaffold(
-        appBar: AppBar(
-          title: Text('Test Profiling'),
-          backgroundColor: Color(0xFF5500b3),
-        ),
-        drawer: Drawer(
-          child: ListView(
-            children: <Widget>[
-              DrawerHeader(
-                decoration: BoxDecoration(
-                    gradient: LinearGradient(colors: <Color>[
-                  Color(0xFF5500b3),
-                  Color(0xFF8c3ce3),
-                ])),
-                child: Container(
-                    child: Column(
-                  children: <Widget>[
-                    Material(
-                      borderRadius: BorderRadius.all(
-                          Radius.circular(50.0)), //bach mayb9ach chkl mrb3
-                      child: Padding(
-                        padding: EdgeInsets.all(
-                            8.0), // padding bach it9ad lina padding dyal image
-                        child: CircleAvatar(
-                          child: Image.asset(
-                            'assets/images/user-logo.png',
-                            width: 80,
-                            height: 80,
-                          ),
-                        ), //ndir tswira dyl logo image: AssetImage("Assets/images/logo-RAHMA.png"),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.all(
-                          8.0), // padding bach it9ad lina padding dyal image
-                      child: Text(
-                        user.email,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 15,
+      home: SafeArea(
+        child: new Scaffold(
+          appBar: AppBar(
+            title: Text('Home'),
+            backgroundColor: Colors.teal[800],
+          ),
+          body: FutureBuilder(
+              future: Firestore.instance.collection("Coachs").getDocuments(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                switch (snapshot.connectionState) {
+                  case ConnectionState.waiting:
+                    return Center(child: CircularProgressIndicator());
+                  default:
+                    if (snapshot.hasError)
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                    else {
+                      Widget msgWidget;
+                      List<Test> tests = new List<Test>();
+                      snapshot.data.documents.forEach((element) {
+                        Test tempTest = Test.fromJson(element.data);
+                        if (tempTest.coachName == user.email) {
+                          tests.add(tempTest);
+                        }
+                      });
+                      print(size);
+                      return Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: GridView.builder(
+                            itemCount: tests.length == null ? 0 : tests.length,
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount:
+                                        (orientation == Orientation.portrait)
+                                            ? 2
+                                            : 3),
+                            itemBuilder: (context, index) {
+                              return Card(
+                                color: Colors.teal[700],
+                                elevation: 25.0,
+                                child: Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: <Widget>[
+                                      FittedBox(
+                                        fit: BoxFit.fill,
+                                        child: Text(
+                                          tests[index].title.toUpperCase(),
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                              decoration:
+                                                  TextDecoration.underline),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: tests[index].language == 'fr'
+                                            ? 15.0
+                                            : 3.0,
+                                      ),
+                                      FittedBox(
+                                        fit: BoxFit.fill,
+                                        child: Text(
+                                          tests[index].subject.toUpperCase(),
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: tests[index].language == 'fr'
+                                            ? 15.0
+                                            : 6.0,
+                                      ),
+                                      FittedBox(
+                                        fit: BoxFit.fill,
+                                        child: Text(
+                                          (tests[index].language == 'fr'
+                                                  ? 'Questions #: '
+                                                  : 'عدد الاسئلة: ') +
+                                              tests[index]
+                                                  .numOfQuestions
+                                                  .toString(),
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            }),
+                      );
+                    }
+                }
+              }),
+          drawer: Drawer(
+            child: ListView(
+              children: <Widget>[
+                DrawerHeader(
+                  decoration: BoxDecoration(
+                      gradient: LinearGradient(colors: <Color>[
+                    Color(0xFF5500b3),
+                    Color(0xFF8c3ce3),
+                  ])),
+                  child: Container(
+                      child: Column(
+                    children: <Widget>[
+                      Material(
+                        borderRadius: BorderRadius.all(
+                            Radius.circular(50.0)), //bach mayb9ach chkl mrb3
+                        child: Padding(
+                          padding: EdgeInsets.all(
+                              8.0), // padding bach it9ad lina padding dyal image
+                          child: CircleAvatar(
+                            child: Image.asset(
+                              'assets/images/user-logo.png',
+                              width: 80,
+                              height: 80,
+                            ),
+                          ), //ndir tswira dyl logo image: AssetImage("Assets/images/logo-RAHMA.png"),
                         ),
                       ),
-                    )
-                  ],
-                )),
-              ),
-              Menu(Icons.save_alt, 'Importer', () => Importer(user: user)),
-              //Menu(Icons.launch, 'Exporter', () => {}),
-              //Menu(Icons.assignment_turned_in, 'Tests', () => {}),
-              //Menu(Icons.assignment, 'Resultats', () => {}),
-              Menu(Icons.people, 'Les Candidates', () => InsertCandidates()),
-              Menu(
-                  Icons.person_add, 'Invitation', () => Candidate2Invitation()),
-              //Menu(Icons.build, 'Generer', () => {}),
-              Menu(Icons.exit_to_app, 'Log-Out', () => FirstView()),
-            ],
+                      Padding(
+                        padding: EdgeInsets.all(
+                            8.0), // padding bach it9ad lina padding dyal image
+                        child: Text(
+                          user.email,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                          ),
+                        ),
+                      )
+                    ],
+                  )),
+                ),
+                Menu(Icons.save_alt, 'Importer', () => Importer(user: user)),
+                //Menu(Icons.launch, 'Exporter', () => {}),
+                //Menu(Icons.assignment_turned_in, 'Tests', () => {}),
+                //Menu(Icons.assignment, 'Resultats', () => {}),
+                Menu(Icons.people, 'Les Candidates', () => InsertCandidates()),
+                Menu(Icons.person_add, 'Invitation',
+                    () => Candidate2Invitation()),
+                //Menu(Icons.build, 'Generer', () => {}),
+                Menu(Icons.exit_to_app, 'Log-Out', () => {}),
+              ],
+            ),
           ),
         ),
       ),
@@ -116,13 +214,10 @@ class Menu extends StatelessWidget {
           splashColor: Colors.deepOrange,
           onTap: () {
             if (this.text == 'Log-Out') {
-              
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => this.onTap(),
-                ),
-              );
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => FirstView()),
+                  (Route<dynamic> route) => false);
               authHandler.signOut();
             } else {
               Navigator.push(

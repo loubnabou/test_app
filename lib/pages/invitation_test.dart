@@ -107,7 +107,7 @@ class _TestInvitationState extends State<TestInvitation> {
                     'There are some errors happen, please try again', 1));
               }
 
-              Timer(Duration(milliseconds: widget.emailsList.length * 1500), onClose);
+              Timer(Duration(milliseconds: ((widget.emailsList.length) +1) * 1500), onClose);
             }),
       ),
     );

@@ -210,9 +210,9 @@ class _CandidateInfoState extends State<CandidateInfo> {
             candidateEmail.clear();
           } else {
             // show msg with This test is not availabe yet
-            /*showInSnackBar(
-                "This Test was finished, see your result in your e-mail");*/
-            Navigator.push(
+            showInSnackBar(
+                "This Test was finished, see your result in your e-mail");
+            /*Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => ShowTestResult(
@@ -220,7 +220,7 @@ class _CandidateInfoState extends State<CandidateInfo> {
                   testID: invitationKey.testID,
                 ),
               ),
-            );
+            );*/
             break;
           }
         } else {

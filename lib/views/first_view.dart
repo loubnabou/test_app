@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:tesapp/views/sign_up_view.dart';
 import 'package:tesapp/widgets/custom_dialog.dart';
 
 class FirstView extends StatelessWidget {
@@ -59,23 +60,28 @@ class FirstView extends StatelessWidget {
                       builder: (BuildContext context) => CustomDialog(
                         title: "Would you like to create a free account?",
                         description:
-                        "With an account, your data will be securely saved, allowing you to access it from multiple devices.",
+                            "With an account, your data will be securely saved, allowing you to access it from multiple devices.",
                         primaryButtonText: "Create My Account",
                         primaryButtonRoute: "/signUp",
-
                       ),
                     );
                   },
                 ),
                 SizedBox(height: _height * 0.05),
                 FlatButton(
-
                   child: Text(
                     "Sign In",
                     style: TextStyle(color: Colors.white, fontSize: 25),
                   ),
                   onPressed: () {
-                    Navigator.of(context).pushReplacementNamed('/signIn');
+                    //Navigator.of(context).pushReplacementNamed('/signIn');
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            SignUpView(authFormType: AuthFormType.signIn),
+                      ),
+                    );
                   },
                 )
               ],
