@@ -124,6 +124,7 @@ class ShowTestResult extends StatelessWidget {
                         ansScoreFR[ansScoreFR.keys.elementAt(i - 1)] = score;
                       }
 
+                      
                       maxValueAR = ansScoreAR.values.elementAt(0);
                       maxValueFR = ansScoreFR.values.elementAt(0);
                       maxValueARIndex = ansScoreAR.keys.elementAt(0);
@@ -144,12 +145,25 @@ class ShowTestResult extends StatelessWidget {
                           maxValueFRIndex = key;
                         }
                       });
+                      
 
                       completed = !completed;
                     }
-
-                    /*print(ansScoreAR);
+                    /*
+                    print(ansScoreAR);
                     print(ansScoreFR);*/
+                    
+                    List<BarChartGroupData> listOfItems = [];
+                    for (int i = 0; i < ansScoreAR.length; i++) {
+                      int arScore = ansScoreAR[ansScoreAR.keys.elementAt(i)];
+                      int frScore = ansScoreFR[ansScoreFR.keys.elementAt(i)];
+                      var item = makeGroupData(i, arScore.toDouble(),
+                          frScore.toDouble(), colors[0], colors[1]);
+                      listOfItems.add(item);
+                    }
+                    final raw = listOfItems;
+                    final showBarGroups = raw;
+
                     msgWidget = Padding(
                       padding: const EdgeInsets.symmetric(
                           vertical: 5.0, horizontal: 1.0),
@@ -169,20 +183,20 @@ class ShowTestResult extends StatelessWidget {
                                   children: <Widget>[
                                     showIndicator(
                                         'كن سريعا', 'depeche toi', Colors.pink),
-                                    showIndicator(
-                                        'قم بمجهود', 'fais des efforts', Colors.pink),
+                                    showIndicator('قم بمجهود',
+                                        'fais des efforts', Colors.pink),
                                     showIndicator(
                                         'كن قويا', 'sois fort', Colors.pink),
-                                    showIndicator(
-                                        'كن مثاليا', 'sois parfait', Colors.pink),
-                                    showIndicator(
-                                        'ارضي الآخر', 'fais plaisir', Colors.pink)
+                                    showIndicator('كن مثاليا', 'sois parfait',
+                                        Colors.pink),
+                                    showIndicator('ارضي الآخر', 'fais plaisir',
+                                        Colors.pink)
                                   ],
                                 ),
                                 SizedBox(
                                   height: 25.0,
                                 ),
-                                Expanded(child:buildBarChart())
+                                Expanded(child: buildBarChart(showBarGroups))
                               ])),
                           SizedBox(
                             height: 25.0,
@@ -262,7 +276,7 @@ class ShowTestResult extends StatelessWidget {
       child: Column(
         children: <Widget>[
           Transform.rotate(
-            angle: pi/4,
+            angle: pi / 4,
             child: Text(text1,
                 style: TextStyle(
                     fontSize: 12,
@@ -284,7 +298,7 @@ class ShowTestResult extends StatelessWidget {
             height: 10.0,
           ),
           Transform.rotate(
-            angle: pi/4,
+            angle: pi / 4,
             child: Text(text2,
                 style: TextStyle(
                     fontSize: 12,
@@ -296,38 +310,93 @@ class ShowTestResult extends StatelessWidget {
     );
   }
 
-  Widget buildBarChart() {
+  Widget buildBarChart(var showBarGroup) {
     return Card(
       elevation: 25.0,
       child: Container(
         padding: EdgeInsets.all(10),
         width: double.infinity,
-        child: BarChart(
-          BarChartData(
-            barGroups: [],
+        child: BarChart(BarChartData(
+            barGroups: showBarGroup,
+            maxY: maxValueAR > maxValueFR ? maxValueAR.toDouble() + 2.0 : maxValueFR.toDouble() + 2.0,
+            alignment: BarChartAlignment.spaceEvenly,
+            borderData: FlBorderData(
+              border: Border(bottom: BorderSide(
+                color: Colors.black,
+                width: 2.0
+              ),
+              left: BorderSide(
+                color: Colors.black,
+                width: 2.0
+              ),)
+            ),
+            axisTitleData: FlAxisTitleData(
+              show: true,
+              leftTitle: AxisTitle(
+                showTitle: true,
+                titleText: 'Scores',
+                margin: 8.0,
+                textStyle: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)
+              ),
+              bottomTitle: AxisTitle(
+                showTitle: true,
+                titleText: 'Patterns',
+                margin: 8.0,
+                textStyle: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)
+              ),
+            ),
+            gridData: FlGridData(
+              show: true,
+            ),
             titlesData: FlTitlesData(
               show: true,
               bottomTitles: SideTitles(
                 showTitles: true,
                 textStyle: TextStyle(
-                  color: Color(0xff7589a2),
-                  fontWeight: FontWeight.bold,
-                  fontSize: 12.0
-                ),
-                margin: 20.0,
+                    color: Color(0xff7589a2),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15.0),
+                margin: 8.0,
                 getTitles: (value) {
-                  
+                  switch (value.toInt()) {
+                    case 0:
+                      return 'DEP';
+                    case 1:
+                      return 'Fais';
+                    case 2:
+                      return 'Sois';
+                    case 3:
+                      return 'Parfait';
+                    case 4:
+                      return 'Fais';
+                    default:
+                      return '';
+                  }
                 },
               ),
               leftTitles: SideTitles(
                 showTitles: true,
-              )
-            )
-          )
-        ),
+                textStyle: TextStyle(
+                    color: Color(0xff7589a2),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 13.0),
+                margin: 8.0,
+                getTitles: (value) => value.toString(),
+              ),
+            ))),
       ),
     );
   }
+
+  BarChartGroupData makeGroupData(
+      int x, double y1, double y2, Color c1, Color c2) {
+    return BarChartGroupData(barsSpace: 2.0, x: x, barRods: [
+      BarChartRodData(y: y1, color: c1, width: 15.0, borderRadius: BorderRadius.circular(0.0)),
+      BarChartRodData(y: y2, color: c2, width: 15.0, borderRadius: BorderRadius.circular(0.0))
+    ]);
+  }
+
+  /*
 
   Widget buildPieChart(dynamic list, double percentage, String title) {
     int colorsIndex1 = -1;
@@ -405,9 +474,10 @@ class ShowTestResult extends StatelessWidget {
               ],
             )));
   }
+  */
 }
 
-class Result{
+class Result {
   String result;
   double score;
 
