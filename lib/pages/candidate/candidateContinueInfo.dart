@@ -208,6 +208,7 @@ class _CandidateInfoState extends State<CandidateInfo> {
               ),
             );
             candidateEmail.clear();
+            candidatePassword.clear();
           } else {
             // show msg with This test is not availabe yet
             showInSnackBar(
@@ -227,7 +228,7 @@ class _CandidateInfoState extends State<CandidateInfo> {
           // show msg with Wrong Key
           showInSnackBar(
               "Uncorrect Password, try again, or contact with your coach");
-          break;
+          //break;
         }
       }
 

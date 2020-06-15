@@ -169,7 +169,7 @@ class ShowTestResult extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
                           Expanded(
-                            flex: 10,
+                            flex: 8,
                             child: Container(
                                 alignment: Alignment.topCenter,
                                 padding: EdgeInsets.only(top: 10.0),
@@ -178,19 +178,30 @@ class ShowTestResult extends StatelessWidget {
                                     MediaQuery.of(context).size.height * 0.75,
                                 color: Colors.teal[700],
                                 child: Column(children: <Widget>[
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: List.generate(5, (index) => index)
-                                        .map((index) => showIndicator(
-                                            ansScoreAR.keys.elementAt(index),
-                                            ansScoreFR.keys.elementAt(index),
-                                            Colors.pink))
-                                        .toList(),
+                                  Expanded(
+                                    flex: 1,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children:
+                                          List.generate(5, (index) => index)
+                                              .map((index) => Expanded(
+                                                flex: 1,
+                                                  child: showIndicator(
+                                                      ansScoreAR.keys
+                                                          .elementAt(index),
+                                                      ansScoreFR.keys
+                                                          .elementAt(index),
+                                                      Colors.pink)))
+                                              .toList(),
+                                    ),
                                   ),
                                   SizedBox(
                                     height: 25.0,
                                   ),
-                                  Expanded(child: buildBarChart(showBarGroups))
+                                  Expanded(
+                                      flex: 4,
+                                      child: buildBarChart(showBarGroups))
                                 ])),
                           ),
                           SizedBox(
@@ -245,9 +256,7 @@ class ShowTestResult extends StatelessWidget {
                   }
                 }
 
-                return Center(
-                  child: msgWidget,
-                );
+                return msgWidget;
               }
           }
         },

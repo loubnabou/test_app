@@ -188,7 +188,7 @@ class _FrancaisTestCarouselState extends State<FrancaisTestCarousel> {
         elevation: 10.0,
         child: Container(
           width: width,
-          height: height * 0.68,
+          height: height * 0.75,
           child: PageView.builder(
             controller: _testFrancaisQuestionsPageController,
             scrollDirection: Axis.horizontal,
@@ -221,7 +221,7 @@ class _FrancaisTestCarouselState extends State<FrancaisTestCarousel> {
                       ),
                     ),
                     Expanded(
-                      flex: 7,
+                      flex: 5,
                       child: ListView.builder(
                           shrinkWrap: true,
                           itemCount: widget.francaisTest.answers.length,
