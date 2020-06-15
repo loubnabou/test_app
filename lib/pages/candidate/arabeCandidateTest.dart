@@ -15,13 +15,15 @@ class MakeArabeCandidateTestApp extends StatelessWidget {
   final List<String> listOfChoisesFrancaisAnswers;
   final Map<String, Map<String, int>> answersDetailsFR;
   final Test arabeTest;
+  final Test francaisTest;
   MakeArabeCandidateTestApp(
       {this.email,
       this.isFirstTime = true,
       this.invitationKey,
       this.listOfChoisesFrancaisAnswers,
       this.answersDetailsFR,
-      this.arabeTest});
+      this.arabeTest,
+      this.francaisTest});
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -37,7 +39,8 @@ class MakeArabeCandidateTestApp extends StatelessWidget {
                   invitationKey: invitationKey,
                   listOfChoisesFrancaisAnswers: listOfChoisesFrancaisAnswers,
                   answersDetailsFR: answersDetailsFR,
-                  arabeTest: arabeTest);
+                  arabeTest: arabeTest,
+                  francaisTest: francaisTest,);
             },
           ),
         );
@@ -53,13 +56,15 @@ class ArabeCandidateTest extends StatefulWidget {
   final List<String> listOfChoisesFrancaisAnswers;
   final Map<String, Map<String, int>> answersDetailsFR;
   final Test arabeTest;
+  final Test francaisTest;
   ArabeCandidateTest(
       {this.email,
       this.isFirstTime = true,
       this.invitationKey,
       this.listOfChoisesFrancaisAnswers,
       this.answersDetailsFR,
-      this.arabeTest});
+      this.arabeTest,
+      this.francaisTest});
   @override
   _ArabeCandidateTestState createState() => _ArabeCandidateTestState();
 }
@@ -72,69 +77,75 @@ class _ArabeCandidateTestState extends State<ArabeCandidateTest> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _scaffoldKey,
-      backgroundColor: Colors.white60,
-      appBar: AppBar(
-        title: Text("الأختبار"),
-        automaticallyImplyLeading: false,
-      ),
-      body: widget.isFirstTime
-          ? FutureBuilder<QuerySnapshot>(
-              future: Firestore.instance.collection("Coachs").getDocuments(),
-              builder: (BuildContext context,
-                  AsyncSnapshot<QuerySnapshot> snapshot) {
-                switch (snapshot.connectionState) {
-                  case ConnectionState.waiting:
-                    return Center(child: CircularProgressIndicator());
-                  default:
-                    if (snapshot.hasError)
-                      return Center(child: Text('Error: ${snapshot.error}'));
-                    else {
-                      Widget msgWidget;
-                      int counterTests = 0;
-                      for (int i = 0; i < snapshot.data.documents.length; i++) {
-                        if (counterTests == 2) break;
+    return SafeArea(
+      child: Scaffold(
+        key: _scaffoldKey,
+        backgroundColor: Colors.white60,
+        appBar: AppBar(
+          title: Text("الأختبار"),
+          automaticallyImplyLeading: false,
+        ),
+        body: widget.isFirstTime
+            ? FutureBuilder<QuerySnapshot>(
+                future: Firestore.instance.collection("Coachs").getDocuments(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.waiting:
+                      return Center(child: CircularProgressIndicator());
+                    default:
+                      if (snapshot.hasError)
+                        return Center(child: Text('Error: ${snapshot.error}'));
+                      else {
+                        Widget msgWidget;
+                        int counterTests = 0;
+                        for (int i = 0;
+                            i < snapshot.data.documents.length;
+                            i++) {
+                          if (counterTests == 2) break;
 
-                        var a = snapshot.data.documents[i];
-                        Test tempTest = Test.fromJson(a.data);
-                        if (tempTest.testID == widget.invitationKey.testID) {
-                          if (tempTest.language == 'ar') {
-                            counterTests++;
-                            arabeTest = tempTest;
+                          var a = snapshot.data.documents[i];
+                          Test tempTest = Test.fromJson(a.data);
+                          if (tempTest.testID == widget.invitationKey.testID) {
+                            if (tempTest.language == 'ar') {
+                              counterTests++;
+                              arabeTest = tempTest;
+                            } else {
+                              counterTests++;
+                              francaisTest = tempTest;
+                            }
+                            msgWidget = ArabeTestCarousel(
+                              arabeTest: arabeTest,
+                              isFirstTime: widget.isFirstTime,
+                              invitationKey: widget.invitationKey,
+                              francaisTest: francaisTest,
+                              email: widget.email,
+                              scaffoldKey: _scaffoldKey,
+                            );
                           } else {
-                            counterTests++;
-                            francaisTest = tempTest;
+                            msgWidget = Center(
+                              child: Text(
+                                  "Test may be not approved yet, check again after some time"),
+                            );
                           }
-                          msgWidget = ArabeTestCarousel(
-                            arabeTest: arabeTest,
-                            isFirstTime: widget.isFirstTime,
-                            invitationKey: widget.invitationKey,
-                            francaisTest: francaisTest,
-                            email: widget.email,
-                            scaffoldKey: _scaffoldKey,
-                          );
-                        } else {
-                          msgWidget = Center(
-                            child: Text(
-                                "Test may be not approved yet, check again after some time"),
-                          );
                         }
+                        return msgWidget;
                       }
-                      return msgWidget;
-                    }
-                }
-              },
-            )
-          : ArabeTestCarousel(
-              arabeTest: widget.arabeTest,
-              isFirstTime: widget.isFirstTime,
-              invitationKey: widget.invitationKey,
-              listOfChoisesFrancaisAnswers: widget.listOfChoisesFrancaisAnswers,
-              answersDetailsFR: widget.answersDetailsFR,
-              email: widget.email,
-              scaffoldKey: _scaffoldKey,
-            ),
+                  }
+                },
+              )
+            : ArabeTestCarousel(
+                arabeTest: widget.arabeTest,
+                francaisTest: widget.francaisTest,
+                isFirstTime: widget.isFirstTime,
+                invitationKey: widget.invitationKey,
+                listOfChoisesFrancaisAnswers:
+                    widget.listOfChoisesFrancaisAnswers,
+                answersDetailsFR: widget.answersDetailsFR,
+                email: widget.email,
+                scaffoldKey: _scaffoldKey,
+              ),
+      ),
     );
   }
 }
@@ -211,8 +222,8 @@ class _ArabeTestCarouselState extends State<ArabeTestCarousel> {
       child: Card(
         elevation: 10.0,
         child: Container(
-          width: width * 0.85,
-          height: height * 0.57,
+          width: width,
+          height: height * 0.69,
           child: PageView.builder(
             controller: _testArabeQuestionsPageController,
             scrollDirection: Axis.horizontal,
@@ -233,18 +244,19 @@ class _ArabeTestCarouselState extends State<ArabeTestCarousel> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 15.0),
-                      child: FittedBox(
-                          fit: BoxFit.fill,
-                          child: Text(
-                            (index + 1).toString() + ". " + question.question,
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 20.0),
-                          )),
+                    Expanded(
+                      flex: 2,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 15.0),
+                        child: Text(
+                          (index + 1).toString() + ". " + question.question,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 18.0),
+                        ),
+                      ),
                     ),
                     Expanded(
-                      flex: 4,
+                      flex: 7,
                       child: ListView.builder(
                           shrinkWrap: true,
                           itemCount: widget.arabeTest.answers.length,
@@ -307,25 +319,28 @@ class _ArabeTestCarouselState extends State<ArabeTestCarousel> {
                           }),
                     ),
                     Expanded(
-                        flex: 1,
+                        flex: 2,
                         child: Padding(
-                          padding: EdgeInsets.symmetric(vertical: 15.0),
+                          padding: EdgeInsets.symmetric(vertical: 20.0),
                           child: RaisedButton(
                               elevation: 10.0,
                               color: isLastQuestion
                                   ? Colors.red[700]
                                   : Colors.blue[500],
-                              child: Text(
-                                isLastQuestion
-                                    ? widget.isFirstTime
-                                        ? "الذهاب الى الأختبار بالفرنسي"
-                                            .toUpperCase()
-                                        : "إنهاء".toUpperCase()
-                                    : "إستمرار".toUpperCase(),
-                                style: TextStyle(
-                                    fontSize: 15.0,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                                child: Text(
+                                  isLastQuestion
+                                      ? widget.isFirstTime
+                                          ? "الذهاب الى الأختبار بالفرنسي"
+                                              .toUpperCase()
+                                          : "إنهاء".toUpperCase()
+                                      : "إستمرار".toUpperCase(),
+                                  style: TextStyle(
+                                      fontSize: 20.0,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
+                                ),
                               ),
                               onPressed:
                                   listOfChoisesArabeAnswers[currentpage] == null
@@ -350,6 +365,7 @@ class _ArabeTestCarouselState extends State<ArabeTestCarousel> {
                                                         listOfChoisesArabeAnswers,
                                                     francaisTest:
                                                         widget.francaisTest,
+                                                    arabeTest: widget.arabeTest,
                                                     answersDetailsAR:
                                                         answersDetailsAR,
                                                     email: widget.email,
@@ -358,13 +374,19 @@ class _ArabeTestCarouselState extends State<ArabeTestCarousel> {
                                               );
                                             } else {
                                               // finish the test
-                                              print(answersDetailsAR);
-                                              print(widget.answersDetailsFR);
+                                              /*print(answersDetailsAR);
+                                              print(widget.answersDetailsFR);*/
 
                                               CandidateTestAnswer candidateTestAnswer = new CandidateTestAnswer(
                                                   email: widget.email,
                                                   testID: widget
                                                       .invitationKey.testID,
+                                                  numOfTestAnswersAR: widget
+                                                      .arabeTest
+                                                      .numOfTestAnswers,
+                                                  numOfTestAnswersFR: widget
+                                                      .francaisTest
+                                                      .numOfTestAnswers,
                                                   numOfArabeAnswers:
                                                       listOfChoisesArabeAnswers
                                                           .length,
@@ -377,18 +399,18 @@ class _ArabeTestCarouselState extends State<ArabeTestCarousel> {
                                                   numOfFrancaisQuestions: widget
                                                       .listOfChoisesFrancaisAnswers
                                                       .length,
-                                                  totalQuestionsEachAnsAR:
-                                                      (listOfChoisesArabeAnswers.length) /
-                                                          (widget.arabeTest
-                                                              .answers.length),
-                                                  totalQuestionsEachAnsFR: (widget
-                                                          .listOfChoisesFrancaisAnswers
-                                                          .length) /
-                                                      (widget.arabeTest.answers
-                                                          .length),
+                                                  totalQuestionsEachAnsAR: widget
+                                                      .arabeTest
+                                                      .numOfTestAnswers
+                                                      .toDouble(),
+                                                  totalQuestionsEachAnsFR:
+                                                      widget.francaisTest
+                                                          .numOfTestAnswers
+                                                          .toDouble(),
                                                   arabeAnswers:
                                                       listOfChoisesArabeAnswers,
-                                                  ansDetailsAR: answersDetailsAR,
+                                                  ansDetailsAR:
+                                                      answersDetailsAR,
                                                   francaisAnswers: widget.listOfChoisesFrancaisAnswers,
                                                   ansDetailsFR: widget.answersDetailsFR);
 
@@ -400,7 +422,7 @@ class _ArabeTestCarouselState extends State<ArabeTestCarousel> {
                                                   .then((value) {
                                                 if (value == true) {
                                                   showInSnackBar(
-                                                      "Check Email to see your result");
+                                                      "Merci! you will re-direct to see your results");
                                                 }
                                               });
 

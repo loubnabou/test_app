@@ -86,7 +86,7 @@ class ShowTestResult extends StatelessWidget {
                     while (completed == false) {
                       msgWidget = CircularProgressIndicator();
                       for (int i = 1;
-                          i <= candidateTestAnswer.numOfArabeAnswers;
+                          i <= candidateTestAnswer.numOfTestAnswersAR;
                           i++) {
                         double countEachQuestion =
                             candidateTestAnswer.totalQuestionsEachAnsAR;
@@ -106,7 +106,7 @@ class ShowTestResult extends StatelessWidget {
                       }
 
                       for (int i = 1;
-                          i <= candidateTestAnswer.numOfFrancaisAnswers;
+                          i <= candidateTestAnswer.numOfTestAnswersFR;
                           i++) {
                         double countEachQuestion =
                             candidateTestAnswer.totalQuestionsEachAnsFR;
@@ -147,8 +147,8 @@ class ShowTestResult extends StatelessWidget {
 
                       completed = !completed;
                     }
-                    /*
-                    print(ansScoreAR);
+
+                    /*print(ansScoreAR);
                     print(ansScoreFR);*/
 
                     List<BarChartGroupData> listOfItems = [];
@@ -168,28 +168,31 @@ class ShowTestResult extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
-                          Container(
-                              alignment: Alignment.topCenter,
-                              padding: EdgeInsets.only(top: 10.0),
-                              width: MediaQuery.of(context).size.width,
-                              height: MediaQuery.of(context).size.height * 0.75,
-                              color: Colors.teal[700],
-                              child: Column(children: <Widget>[
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  
-                                  children: List.generate(5, (index) => index)
-                                      .map((index) => showIndicator(
-                                          ansScoreAR.keys.elementAt(index),
-                                          ansScoreFR.keys.elementAt(index),
-                                          Colors.pink))
-                                      .toList(),
-                                ),
-                                SizedBox(
-                                  height: 25.0,
-                                ),
-                                Expanded(child: buildBarChart(showBarGroups))
-                              ])),
+                          Expanded(
+                            flex: 10,
+                            child: Container(
+                                alignment: Alignment.topCenter,
+                                padding: EdgeInsets.only(top: 10.0),
+                                width: MediaQuery.of(context).size.width,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.75,
+                                color: Colors.teal[700],
+                                child: Column(children: <Widget>[
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: List.generate(5, (index) => index)
+                                        .map((index) => showIndicator(
+                                            ansScoreAR.keys.elementAt(index),
+                                            ansScoreFR.keys.elementAt(index),
+                                            Colors.pink))
+                                        .toList(),
+                                  ),
+                                  SizedBox(
+                                    height: 25.0,
+                                  ),
+                                  Expanded(child: buildBarChart(showBarGroups))
+                                ])),
+                          ),
                           SizedBox(
                             height: 25.0,
                           ),
@@ -202,6 +205,7 @@ class ShowTestResult extends StatelessWidget {
                             height: 10.0,
                           ),*/
                           Expanded(
+                            flex: 1,
                             child: RaisedButton(
                               elevation: 20.0,
                               color: Colors.red[700],
@@ -284,10 +288,10 @@ class ShowTestResult extends StatelessWidget {
             decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
                 gradient: LinearGradient(
-                  begin: FractionalOffset(0.0, 0.0),
-                  end: FractionalOffset(0.0, 1.0),
-                  stops: [0.0,1.0],
-                  colors: [colors[0], colors[1]])),
+                    begin: FractionalOffset(0.0, 0.0),
+                    end: FractionalOffset(0.0, 1.0),
+                    stops: [0.0, 1.0],
+                    colors: [colors[0], colors[1]])),
           ),
           SizedBox(
             height: 10.0,
@@ -330,15 +334,15 @@ class ShowTestResult extends StatelessWidget {
                 leftTitle: AxisTitle(
                     showTitle: true,
                     titleText: 'Scores',
-                    margin: 8.0,
+                    margin: 12.0,
                     textStyle: TextStyle(
-                        fontWeight: FontWeight.bold, color: Colors.black)),
+                        fontWeight: FontWeight.bold, color: Colors.teal[800])),
                 bottomTitle: AxisTitle(
                     showTitle: true,
                     titleText: 'Patterns',
                     margin: 8.0,
                     textStyle: TextStyle(
-                        fontWeight: FontWeight.bold, color: Colors.black)),
+                        fontWeight: FontWeight.bold, color: Colors.teal[800])),
               ),
               gridData: FlGridData(
                 show: true,
@@ -353,9 +357,9 @@ class ShowTestResult extends StatelessWidget {
                 bottomTitles: SideTitles(
                   showTitles: true,
                   textStyle: TextStyle(
-                      color: Color(0xff7589a2),
+                      color: Colors.teal[800],
                       fontWeight: FontWeight.bold,
-                      fontSize: 12.0),
+                      fontSize: 13.0),
                   margin: 8.0,
                   getTitles: (value) =>
                       '${ansScoreAR.keys.elementAt(value.toInt())}',
@@ -363,11 +367,36 @@ class ShowTestResult extends StatelessWidget {
                 leftTitles: SideTitles(
                   showTitles: true,
                   textStyle: TextStyle(
-                      color: Color(0xff7589a2),
+                      color: Colors.teal[800],
                       fontWeight: FontWeight.bold,
                       fontSize: 13.0),
                   margin: 8.0,
-                  getTitles: (value) => value.toString(),
+                  getTitles: (value) {
+                    if (value == 0)
+                      return value.toString();
+                    else if (value == 10)
+                      return value.toString();
+                    else if (value == 20)
+                      return value.toString();
+                    else if (value == 30)
+                      return value.toString();
+                    else if (value == 40)
+                      return value.toString();
+                    else if (value == 50)
+                      return value.toString();
+                    else if (value == 60)
+                      return value.toString();
+                    else if (value == 70)
+                      return value.toString();
+                    else if (value == 80)
+                      return value.toString();
+                    else if (value == 90)
+                      return value.toString();
+                    else if (value == 100)
+                      return value.toString();
+                    else
+                      return '';
+                  },
                 ),
               )),
           swapAnimationDuration: const Duration(seconds: 3),

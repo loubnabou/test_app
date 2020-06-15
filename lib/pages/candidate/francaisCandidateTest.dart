@@ -15,13 +15,15 @@ class MakeFrancaisCandidateTest extends StatefulWidget {
   final List<String> listOfChoisesArabeAnswers;
   final Map<String, Map<String, int>> answersDetailsAR;
   final Test francaisTest;
+  final Test arabeTest;
   MakeFrancaisCandidateTest(
       {this.email,
       this.isFirstTime = true,
       this.invitationKey,
       this.listOfChoisesArabeAnswers,
       this.answersDetailsAR,
-      this.francaisTest});
+      this.francaisTest,
+      this.arabeTest});
   @override
   _MakeFrancaisCandidateTestState createState() =>
       _MakeFrancaisCandidateTestState();
@@ -35,71 +37,76 @@ class _MakeFrancaisCandidateTestState extends State<MakeFrancaisCandidateTest> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _scaffoldKey,
-      backgroundColor: Colors.white60,
-      appBar: AppBar(
-        title: Text("Un Test"),
-        automaticallyImplyLeading: false,
-      ),
-      body: widget.isFirstTime
-          ? FutureBuilder<QuerySnapshot>(
-              future: Firestore.instance.collection("Coachs").getDocuments(),
-              builder: (BuildContext context,
-                  AsyncSnapshot<QuerySnapshot> snapshot) {
-                switch (snapshot.connectionState) {
-                  case ConnectionState.waiting:
-                    return Center(child: CircularProgressIndicator());
-                  default:
-                    if (snapshot.hasError)
-                      return Center(child: Text('Error: ${snapshot.error}'));
-                    else {
-                      Widget msgWidget;
-                      num counterTests = 0;
+    return SafeArea(
+      child: Scaffold(
+        key: _scaffoldKey,
+        backgroundColor: Colors.white60,
+        appBar: AppBar(
+          title: Text("Un Test"),
+          automaticallyImplyLeading: false,
+        ),
+        body: widget.isFirstTime
+            ? FutureBuilder<QuerySnapshot>(
+                future: Firestore.instance.collection("Coachs").getDocuments(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.waiting:
+                      return Center(child: CircularProgressIndicator());
+                    default:
+                      if (snapshot.hasError)
+                        return Center(child: Text('Error: ${snapshot.error}'));
+                      else {
+                        Widget msgWidget;
+                        num counterTests = 0;
 
-                      for (int i = 0; i < snapshot.data.documents.length; i++) {
-                        if (counterTests == 2) break;
+                        for (int i = 0;
+                            i < snapshot.data.documents.length;
+                            i++) {
+                          if (counterTests == 2) break;
 
-                        var a = snapshot.data.documents[i];
-                        Test tempTest = Test.fromJson(a.data);
-                        if (tempTest.testID == widget.invitationKey.testID) {
-                          if (tempTest.language == 'fr') {
-                            counterTests++;
-                            francaisTest = tempTest;
+                          var a = snapshot.data.documents[i];
+                          Test tempTest = Test.fromJson(a.data);
+                          if (tempTest.testID == widget.invitationKey.testID) {
+                            if (tempTest.language == 'fr') {
+                              counterTests++;
+                              francaisTest = tempTest;
+                            } else {
+                              counterTests++;
+                              arabeTest = tempTest;
+                            }
+
+                            msgWidget = FrancaisTestCarousel(
+                              francaisTest: francaisTest,
+                              isFirstTime: widget.isFirstTime,
+                              invitationKey: widget.invitationKey,
+                              arabeTest: arabeTest,
+                              email: widget.email,
+                              scaffoldKey: _scaffoldKey,
+                            );
                           } else {
-                            counterTests++;
-                            arabeTest = tempTest;
+                            msgWidget = Center(
+                              child: Text(
+                                  "Test may be not approved yet, check again after some time"),
+                            );
                           }
-
-                          msgWidget = FrancaisTestCarousel(
-                            francaisTest: francaisTest,
-                            isFirstTime: widget.isFirstTime,
-                            invitationKey: widget.invitationKey,
-                            arabeTest: arabeTest,
-                            email: widget.email,
-                            scaffoldKey: _scaffoldKey,
-                          );
-                        } else {
-                          msgWidget = Center(
-                            child: Text(
-                                "Test may be not approved yet, check again after some time"),
-                          );
                         }
+                        return msgWidget;
                       }
-                      return msgWidget;
-                    }
-                }
-              },
-            )
-          : FrancaisTestCarousel(
-              francaisTest: widget.francaisTest,
-              isFirstTime: widget.isFirstTime,
-              invitationKey: widget.invitationKey,
-              listOfChoisesArabeAnswers: widget.listOfChoisesArabeAnswers,
-              answersDetailsAR: widget.answersDetailsAR,
-              email: widget.email,
-              scaffoldKey: _scaffoldKey,
-            ),
+                  }
+                },
+              )
+            : FrancaisTestCarousel(
+                francaisTest: widget.francaisTest,
+                arabeTest: widget.arabeTest,
+                isFirstTime: widget.isFirstTime,
+                invitationKey: widget.invitationKey,
+                listOfChoisesArabeAnswers: widget.listOfChoisesArabeAnswers,
+                answersDetailsAR: widget.answersDetailsAR,
+                email: widget.email,
+                scaffoldKey: _scaffoldKey,
+              ),
+      ),
     );
   }
 }
@@ -176,14 +183,12 @@ class _FrancaisTestCarouselState extends State<FrancaisTestCarousel> {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
-    print(width * 0.85);
-    print(height * 0.57);
     return Center(
       child: Card(
         elevation: 10.0,
         child: Container(
-          width: width * 0.85,
-          height: height * 0.57,
+          width: width,
+          height: height * 0.68,
           child: PageView.builder(
             controller: _testFrancaisQuestionsPageController,
             scrollDirection: Axis.horizontal,
@@ -204,18 +209,19 @@ class _FrancaisTestCarouselState extends State<FrancaisTestCarousel> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 15.0),
-                      child: FittedBox(
-                          fit: BoxFit.fill,
-                          child: Text(
-                            (index + 1).toString() + ". " + question.question,
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 20.0),
-                          )),
+                    Expanded(
+                      flex: 2,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 15.0),
+                        child: Text(
+                          (index + 1).toString() + ". " + question.question,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 18.0),
+                        ),
+                      ),
                     ),
                     Expanded(
-                      flex: 4,
+                      flex: 7,
                       child: ListView.builder(
                           shrinkWrap: true,
                           itemCount: widget.francaisTest.answers.length,
@@ -279,108 +285,127 @@ class _FrancaisTestCarouselState extends State<FrancaisTestCarousel> {
                           }),
                     ),
                     Expanded(
-                      flex: 1,
+                        flex: 2,
                         child: Padding(
-                      padding: EdgeInsets.symmetric(vertical: 15.0),
-                      child: RaisedButton(
-                          elevation: 10.0,
-                          color: isLastQuestion
-                              ? Colors.red[700]
-                              : Colors.blue[500],
-                          child: Text(
-                            isLastQuestion
-                                ? widget.isFirstTime
-                                    ? "Commencer le test Arabe".toUpperCase()
-                                    : "Finish".toUpperCase()
-                                : "Continue".toUpperCase(),
-                            style: TextStyle(
-                                fontSize: 15.0,
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          onPressed: listOfChoisesFrancaisAnswers[
-                                      currentpage] ==
-                                  null
-                              ? null
-                              : () {
-                                  if (currentpage ==
-                                      widget.francaisTest.numOfQuestions - 1) {
-                                    if (widget.isFirstTime == true) {
-                                      // go to arabe test
-                                      print(answersDetailsFR);
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              MakeArabeCandidateTestApp(
-                                            isFirstTime: false,
-                                            invitationKey: widget.invitationKey,
-                                            listOfChoisesFrancaisAnswers:
-                                                listOfChoisesFrancaisAnswers,
-                                            arabeTest: widget.arabeTest,
-                                            answersDetailsFR: answersDetailsFR,
-                                            email: widget.email,
-                                          ),
-                                        ),
-                                      );
-                                    } else {
-                                      // finish the test
-                                      print(answersDetailsFR);
-                                      print(widget.answersDetailsAR);
+                          padding: EdgeInsets.symmetric(vertical: 20.0),
+                          child: RaisedButton(
+                              elevation: 10.0,
+                              color: isLastQuestion
+                                  ? Colors.red[700]
+                                  : Colors.blue[500],
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                                child: Text(
+                                  isLastQuestion
+                                      ? widget.isFirstTime
+                                          ? "Commencer le test Arabe"
+                                              .toUpperCase()
+                                          : "Finish".toUpperCase()
+                                      : "Continue".toUpperCase(),
+                                  style: TextStyle(
+                                      fontSize: 15.0,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                              onPressed:
+                                  listOfChoisesFrancaisAnswers[currentpage] ==
+                                          null
+                                      ? null
+                                      : () {
+                                          if (currentpage ==
+                                              widget.francaisTest
+                                                      .numOfQuestions -
+                                                  1) {
+                                            if (widget.isFirstTime == true) {
+                                              // go to arabe test
+                                              print(answersDetailsFR);
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      MakeArabeCandidateTestApp(
+                                                    isFirstTime: false,
+                                                    invitationKey:
+                                                        widget.invitationKey,
+                                                    listOfChoisesFrancaisAnswers:
+                                                        listOfChoisesFrancaisAnswers,
+                                                    arabeTest: widget.arabeTest,
+                                                    francaisTest: widget.francaisTest,
+                                                    answersDetailsFR:
+                                                        answersDetailsFR,
+                                                    email: widget.email,
+                                                  ),
+                                                ),
+                                              );
+                                            } else {
+                                              // finish the test
+                                              /*print(answersDetailsFR);
+                                              print(widget.answersDetailsAR);*/
 
-                                      CandidateTestAnswer candidateTestAnswer = new CandidateTestAnswer(
-                                          email: widget.email,
-                                          testID: widget.invitationKey.testID,
-                                          numOfArabeAnswers: widget
-                                              .listOfChoisesArabeAnswers.length,
-                                          numOfArabeQuestions: widget
-                                              .listOfChoisesArabeAnswers.length,
-                                          numOfFrancaisAnswers:
-                                              listOfChoisesFrancaisAnswers
-                                                  .length,
-                                          numOfFrancaisQuestions:
-                                              listOfChoisesFrancaisAnswers
-                                                  .length,
-                                          totalQuestionsEachAnsAR: (widget
-                                                  .listOfChoisesArabeAnswers
-                                                  .length) /
-                                              (widget
-                                                  .francaisTest.answers.length),
-                                          totalQuestionsEachAnsFR:
-                                              (listOfChoisesFrancaisAnswers.length) /
-                                                  (widget.francaisTest.answers
-                                                      .length),
-                                          arabeAnswers:
-                                              widget.listOfChoisesArabeAnswers,
-                                          ansDetailsAR: widget.answersDetailsAR,
-                                          francaisAnswers:
-                                              listOfChoisesFrancaisAnswers,
-                                          ansDetailsFR: answersDetailsFR);
+                                              CandidateTestAnswer candidateTestAnswer = new CandidateTestAnswer(
+                                                  email: widget.email,
+                                                  testID: widget
+                                                      .invitationKey.testID,
+                                                  numOfTestAnswersAR: widget
+                                                      .arabeTest
+                                                      .numOfTestAnswers,
+                                                  numOfTestAnswersFR: widget
+                                                      .francaisTest
+                                                      .numOfTestAnswers,
+                                                  numOfArabeAnswers: widget
+                                                      .listOfChoisesArabeAnswers
+                                                      .length,
+                                                  numOfArabeQuestions: widget
+                                                      .listOfChoisesArabeAnswers
+                                                      .length,
+                                                  numOfFrancaisAnswers:
+                                                      listOfChoisesFrancaisAnswers
+                                                          .length,
+                                                  numOfFrancaisQuestions:
+                                                      listOfChoisesFrancaisAnswers
+                                                          .length,
+                                                  totalQuestionsEachAnsAR: widget
+                                                      .arabeTest
+                                                      .numOfTestAnswers
+                                                      .toDouble(),
+                                                  totalQuestionsEachAnsFR:
+                                                      widget.francaisTest
+                                                          .numOfTestAnswers
+                                                          .toDouble(),
+                                                  arabeAnswers: widget.listOfChoisesArabeAnswers,
+                                                  ansDetailsAR: widget.answersDetailsAR,
+                                                  francaisAnswers: listOfChoisesFrancaisAnswers,
+                                                  ansDetailsFR: answersDetailsFR);
 
-                                      dataFirebase.sendData('CandidatesAnswers',
-                                          candidateTestAnswer.toJson());
+                                              dataFirebase.sendData(
+                                                  'CandidatesAnswers',
+                                                  candidateTestAnswer.toJson());
 
-                                      // update CandidatesKey
-                                      updateCandidatesKey().then((value) {
-                                        if (value == true) {
-                                          showInSnackBar(
-                                              "Merci! you will re-direct to see your results");
-                                        }
-                                      });
+                                              // update CandidatesKey
+                                              updateCandidatesKey()
+                                                  .then((value) {
+                                                if (value == true) {
+                                                  showInSnackBar(
+                                                      "Merci! you will re-direct to see your results");
+                                                }
+                                              });
 
-                                      Timer(const Duration(milliseconds: 2000),
-                                          onClose);
-                                    }
-                                  } else {
-                                    // go to next page view but currentPage should != length-1
-                                    _testFrancaisQuestionsPageController
-                                        .nextPage(
-                                            duration: const Duration(
-                                                milliseconds: 1000),
-                                            curve: Curves.easeIn);
-                                  }
-                                }),
-                    ))
+                                              Timer(
+                                                  const Duration(
+                                                      milliseconds: 2000),
+                                                  onClose);
+                                            }
+                                          } else {
+                                            // go to next page view but currentPage should != length-1
+                                            _testFrancaisQuestionsPageController
+                                                .nextPage(
+                                                    duration: const Duration(
+                                                        milliseconds: 1000),
+                                                    curve: Curves.easeIn);
+                                          }
+                                        }),
+                        ))
                   ],
                 ),
               );
@@ -444,6 +469,8 @@ class TestQuestionAnswer {
 class CandidateTestAnswer {
   final String email;
   final String testID;
+  final int numOfTestAnswersAR;
+  final int numOfTestAnswersFR;
   final int numOfArabeAnswers;
   final int numOfFrancaisAnswers;
   final int numOfArabeQuestions;
@@ -458,6 +485,8 @@ class CandidateTestAnswer {
   CandidateTestAnswer(
       {this.email,
       this.testID,
+      this.numOfTestAnswersAR,
+      this.numOfTestAnswersFR,
       this.numOfArabeQuestions,
       this.numOfFrancaisQuestions,
       this.numOfArabeAnswers,
@@ -473,6 +502,8 @@ class CandidateTestAnswer {
     return CandidateTestAnswer(
       email: json['email'],
       testID: (json['TestInfo'])['testID'],
+      numOfTestAnswersAR: (json['TestInfo'])['numOfTestAnswersAR'],
+      numOfTestAnswersFR: (json['TestInfo'])['numOfTestAnswersFR'],
       numOfArabeAnswers: ((json['TestInfo'])['Arabe'])['numOfAnswers'],
       numOfArabeQuestions: ((json['TestInfo'])['Arabe'])['numOfQuestions'],
       numOfFrancaisAnswers: ((json['TestInfo'])['Francais'])['numOfAnswers'],
@@ -494,6 +525,8 @@ class CandidateTestAnswer {
       'email': email,
       'TestInfo': {
         'testID': testID,
+        'numOfTestAnswersAR': numOfTestAnswersAR,
+        'numOfTestAnswersFR': numOfTestAnswersFR,
         'Arabe': {
           'numOfAnswers': numOfArabeAnswers,
           'numOfQuestions': numOfArabeQuestions,

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class DataFirebase {
@@ -29,6 +30,8 @@ class DataFirebase {
 }
 
 class InsertCandidates extends StatefulWidget {
+  final FirebaseUser user;
+  InsertCandidates({this.user});
   @override
   _InsertCandidatesState createState() => _InsertCandidatesState();
 }
@@ -148,6 +151,7 @@ class _InsertCandidatesState extends State<InsertCandidates> {
                   _controller.clear();
                   CandidateEmailFormat candidateEmailFormat =
                       new CandidateEmailFormat(
+                          adminEmail: widget.user.email,
                           email: _candidatesController[i].text);
 
                   dataFirebase.sendData("Users", candidateEmailFormat.toJson());
@@ -193,12 +197,14 @@ class _InsertCandidatesState extends State<InsertCandidates> {
 }
 
 class CandidateEmailFormat {
+  final String adminEmail;
   final String email;
   final String userType;
-  CandidateEmailFormat({this.email, this.userType = 'candidate'});
+  CandidateEmailFormat({this.adminEmail,this.email, this.userType = 'candidate'});
 
   Map<String, Object> toJson() {
     return {
+      "addedBy" : adminEmail,
       "user": {
         "email": email != null ? email : 'unknwon',
         "userType": userType,

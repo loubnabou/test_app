@@ -182,7 +182,9 @@ class MyWidget extends StatelessWidget {
                 //Menu(Icons.launch, 'Exporter', () => {}),
                 //Menu(Icons.assignment_turned_in, 'Tests', () => {}),
                 //Menu(Icons.assignment, 'Resultats', () => {}),
-                Menu(Icons.people, 'Les Candidates', () => InsertCandidates()),
+                Menu(Icons.people, 'Les Candidates', () => InsertCandidates(
+                  user: user,
+                )),
                 Menu(Icons.person_add, 'Invitation',
                     () => Candidate2Invitation()),
                 //Menu(Icons.build, 'Generer', () => {}),

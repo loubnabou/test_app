@@ -94,20 +94,26 @@ class _TestInvitationState extends State<TestInvitation> {
               for (int i = 0; i < widget.emailsList.length; i++) {
                 String key = Utils.createCryptoRandomString();
                 InvitationKeys invitationKey = new InvitationKeys(
+                    invitedBy: user.email,
                     testID: selectedTest.testID,
                     email: widget.emailsList[i],
                     key: key);
 
                 dataFirebase.sendData("CandidatesKey", invitationKey.toJson());
-                final msg = SendEmails.sendMail(
-                    widget.emailsList, user.email, key);
+                final msg =
+                    SendEmails.sendMail(widget.emailsList, user.email, key);
                 msg.then((value) {
-                  showInSnackBar('Message sent successfully to ${widget.emailsList[i]}', widget.emailsList.length);
+                  showInSnackBar(
+                      'Message sent successfully to ${widget.emailsList[i]}',
+                      widget.emailsList.length);
                 }).catchError((error) => showInSnackBar(
                     'There are some errors happen, please try again', 1));
               }
 
-              Timer(Duration(milliseconds: ((widget.emailsList.length) +1) * 1500), onClose);
+              Timer(
+                  Duration(
+                      milliseconds: ((widget.emailsList.length) + 1) * 1500),
+                  onClose);
             }),
       ),
     );
@@ -127,7 +133,7 @@ class _TestInvitationState extends State<TestInvitation> {
   void showInSnackBar(String value, int size) {
     _scaffoldKey.currentState.showSnackBar(new SnackBar(
       content: new Text(value),
-      duration: Duration(milliseconds: size*800),
+      duration: Duration(milliseconds: size * 800),
     ));
   }
 }
@@ -143,14 +149,21 @@ class Utils {
 }
 
 class InvitationKeys {
+  final String invitedBy;
   final String testID;
   final String email;
   final String key;
   final bool finished;
-  InvitationKeys({this.finished = false, this.testID, this.email, this.key});
+  InvitationKeys(
+      {this.invitedBy,
+      this.finished = false,
+      this.testID,
+      this.email,
+      this.key});
 
   factory InvitationKeys.fromJson(Map<dynamic, dynamic> json) {
     return InvitationKeys(
+        invitedBy: json['invitedBy'],
         testID: json['testID'],
         finished: json['finished'],
         email: (json['Key'])['email'],
@@ -159,7 +172,8 @@ class InvitationKeys {
 
   Map<String, Object> toJson() {
     return {
-      'finished' : finished,
+      'invitedBy': invitedBy,
+      'finished': finished,
       'testID': testID,
       'Key': {'email': email, 'key': key}
     };
