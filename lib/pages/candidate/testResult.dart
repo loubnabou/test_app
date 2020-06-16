@@ -168,44 +168,37 @@ class ShowTestResult extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
-                          Expanded(
-                            flex: 8,
-                            child: Container(
-                                alignment: Alignment.topCenter,
-                                padding: EdgeInsets.only(top: 10.0),
-                                width: MediaQuery.of(context).size.width,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.75,
-                                color: Colors.teal[700],
-                                child: Column(children: <Widget>[
-                                  Expanded(
-                                    flex: 1,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children:
-                                          List.generate(5, (index) => index)
-                                              .map((index) => Expanded(
-                                                flex: 1,
-                                                  child: showIndicator(
-                                                      ansScoreAR.keys
-                                                          .elementAt(index),
-                                                      ansScoreFR.keys
-                                                          .elementAt(index),
-                                                      Colors.pink)))
-                                              .toList(),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 25.0,
-                                  ),
-                                  Expanded(
-                                      flex: 4,
-                                      child: buildBarChart(showBarGroups))
-                                ])),
-                          ),
+                          Container(
+                              alignment: Alignment.topCenter,
+                              padding: EdgeInsets.only(top: 10.0),
+                              width: MediaQuery.of(context).size.width,
+                              height:
+                                  MediaQuery.of(context).size.height * 0.75,
+                              color: Colors.teal[700],
+                              child: Column(children: <Widget>[
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.center,
+                                  children:
+                                      List.generate(5, (index) => index)
+                                          .map((index) => Expanded(
+                                            flex: 1,
+                                              child: showIndicator(
+                                                  ansScoreAR.keys
+                                                      .elementAt(index),
+                                                  ansScoreFR.keys
+                                                      .elementAt(index),
+                                                  Colors.pink)))
+                                          .toList(),
+                                ),
+                                SizedBox(
+                                  height: 25.0,
+                                ),
+                                Expanded(
+                                    child: buildBarChart(showBarGroups))
+                              ])),
                           SizedBox(
-                            height: 25.0,
+                            height: 15.0,
                           ),
                           /*
                           Expanded(
@@ -216,21 +209,16 @@ class ShowTestResult extends StatelessWidget {
                             height: 10.0,
                           ),*/
                           Expanded(
-                            flex: 1,
                             child: RaisedButton(
                               elevation: 20.0,
                               color: Colors.red[700],
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 20.0),
-                                child: Text(
-                                  "Save & Finish".toUpperCase(),
-                                  style: TextStyle(
-                                      letterSpacing: 2.0,
-                                      fontSize: 15.0,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
-                                ),
+                              child: Text(
+                                "Save & Finish".toUpperCase(),
+                                style: TextStyle(
+                                    letterSpacing: 2.0,
+                                    fontSize: 15.0,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
                               ),
                               onPressed: () {
                                 /*
