@@ -185,13 +185,16 @@ class _CandidateInfoState extends State<CandidateInfo> {
     }
 
     if (isFound) {
+      bool foundPassword = false;
       querySnapshot =
           await Firestore.instance.collection("CandidatesKey").getDocuments();
       for (int i = 0; i < querySnapshot.documents.length; i++) {
         var a = querySnapshot.documents[i];
         InvitationKeys invitationKey = InvitationKeys.fromJson(a.data);
         if (invitationKey.email == _email && invitationKey.key == _password) {
+          foundPassword = true;
           if (invitationKey.finished == false) {
+            
             // go to welcome screen
             final prefs = await SharedPreferences.getInstance();
             final key = 'userType';
@@ -225,12 +228,12 @@ class _CandidateInfoState extends State<CandidateInfo> {
             );*/
             //break;
           }
-        } else {
-          // show msg with Wrong Key
-          showInSnackBar(
-              "Uncorrect Password, try again, or contact with your coach");
-          //break;
-        }
+        } 
+      }
+
+      if(foundPassword == false){
+        showInSnackBar(
+                "Uncorrect password!, please check your mail again, or contact with your coach");
       }
 
       /*final key2 = 'userEmail';
