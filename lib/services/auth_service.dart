@@ -89,13 +89,13 @@ class AuthService {
 class NameValidator {
   static String validate(String value) {
     if (value.isEmpty) {
-      return "Name can't be empty";
+      return "من فضلك ادخل اسمك";
     }
     if (value.length < 2) {
-      return "Name must be at least 2 characters long";
+      return "الاسم لا يجب ان يقل عن حرفين";
     }
     if (value.length > 50) {
-      return "Name must be less than 50 characters long";
+      return "لا يمكن ان يزيد الاسم عن 50 حرف";
     }
     return null;
   }
@@ -104,7 +104,7 @@ class NameValidator {
 class EmailValidator {
   static String validate(String value) {
     if (value.isEmpty) {
-      return "Email can't be empty";
+      return "من فضلك ادخل الايميل";
     }
     return null;
   }
@@ -113,7 +113,7 @@ class EmailValidator {
 class PasswordValidator {
   static String validate(String value) {
     if (value.isEmpty) {
-      return "Password can't be empty";
+      return "من فضلك ادخل الباسورد";
     }
     return null;
   }

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:tesapp/pages/candidate/calculateResult.dart';
 import 'package:tesapp/pages/candidate/candidateHome.dart';
 import 'package:tesapp/pages/candidate/francaisCandidateTest.dart';
 import 'package:tesapp/pages/candidate/testResult.dart';
@@ -319,120 +320,55 @@ class _ArabeTestCarouselState extends State<ArabeTestCarousel> {
                     ),
                     Expanded(
                       child: Container(
-                        //height: height * 0.075,
-                        alignment: Alignment.center,
-                        child: RaisedButton(
-                            elevation: 10.0,
-                            color: isLastQuestion
-                                ? Colors.red[700]
-                                : Colors.blue[500],
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
-                              child: Text(
-                                isLastQuestion
-                                    ? widget.isFirstTime
-                                        ? "الذهاب الى الأختبار بالفرنسي"
-                                            .toUpperCase()
-                                        : "إنهاء".toUpperCase()
-                                    : "إستمرار".toUpperCase(),
-                                style: TextStyle(
-                                    fontSize: 20.0,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                            onPressed: listOfChoisesArabeAnswers[currentpage] ==
-                                    null
-                                ? null
-                                : () {
-                                    if (currentpage ==
-                                        widget.arabeTest.numOfQuestions - 1) {
-                                      if (widget.isFirstTime == true) {
-                                        // go to francais test
-                                        print(answersDetailsAR);
-
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                MakeFrancaisCandidateTest(
-                                              isFirstTime: false,
-                                              invitationKey:
-                                                  widget.invitationKey,
-                                              listOfChoisesArabeAnswers:
-                                                  listOfChoisesArabeAnswers,
-                                              francaisTest: widget.francaisTest,
-                                              arabeTest: widget.arabeTest,
-                                              answersDetailsAR:
-                                                  answersDetailsAR,
-                                              email: widget.email,
-                                            ),
+                          //height: height * 0.075,
+                          alignment: Alignment.center,
+                          child: currentpage != 0
+                              ? Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: <Widget>[
+                                    Expanded(child: customButton()),
+                                    SizedBox(
+                                      width: 10.0,
+                                    ),
+                                    Expanded(
+                                      child: RaisedButton(
+                                        elevation: 10.0,
+                                        color: Colors.blue[500],
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 10, vertical: 10.0),
+                                          child: Text(
+                                            "السؤال السابق".toUpperCase(),
+                                            style: TextStyle(
+                                                fontSize: currentpage !=
+                                                        widget.arabeTest
+                                                                .numOfQuestions -
+                                                            1
+                                                    ? MediaQuery.of(context)
+                                                            .size
+                                                            .width *
+                                                        0.045
+                                                    : MediaQuery.of(context)
+                                                            .size
+                                                            .width *
+                                                        0.035,
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold),
                                           ),
-                                        );
-                                      } else {
-                                        // finish the test
-                                        /*print(answersDetailsAR);
-                                            print(widget.answersDetailsFR);*/
-
-                                        CandidateTestAnswer candidateTestAnswer = new CandidateTestAnswer(
-                                            email: widget.email,
-                                            testID: widget.invitationKey.testID,
-                                            numOfTestAnswersAR: widget
-                                                .arabeTest.numOfTestAnswers,
-                                            numOfTestAnswersFR: widget
-                                                .francaisTest.numOfTestAnswers,
-                                            numOfArabeAnswers:
-                                                listOfChoisesArabeAnswers
-                                                    .length,
-                                            numOfArabeQuestions:
-                                                listOfChoisesArabeAnswers
-                                                    .length,
-                                            numOfFrancaisAnswers: widget
-                                                .listOfChoisesFrancaisAnswers
-                                                .length,
-                                            numOfFrancaisQuestions: widget
-                                                .listOfChoisesFrancaisAnswers
-                                                .length,
-                                            totalQuestionsEachAnsAR: widget
-                                                .arabeTest.numOfTestAnswers
-                                                .toDouble(),
-                                            totalQuestionsEachAnsFR: widget
-                                                .francaisTest.numOfTestAnswers
-                                                .toDouble(),
-                                            arabeAnswers:
-                                                listOfChoisesArabeAnswers,
-                                            ansDetailsAR: answersDetailsAR,
-                                            francaisAnswers: widget
-                                                .listOfChoisesFrancaisAnswers,
-                                            ansDetailsFR:
-                                                widget.answersDetailsFR);
-
-                                        dataFirebase.sendData(
-                                            'CandidatesAnswers',
-                                            candidateTestAnswer.toJson());
-
-                                        updateCandidatesKey().then((value) {
-                                          if (value == true) {
-                                            showInSnackBar(
-                                                "Merci! you will re-direct to see your results");
-                                          }
-                                        });
-
-                                        Timer(
-                                            const Duration(milliseconds: 2000),
-                                            onClose);
-                                      }
-                                    } else {
-                                      // go to next page view but currentPage should != length-1
-                                      _testArabeQuestionsPageController
-                                          .nextPage(
-                                              duration: const Duration(
-                                                  milliseconds: 1000),
-                                              curve: Curves.easeIn);
-                                    }
-                                  }),
-                      ),
+                                        ),
+                                        onPressed: () {
+                                          _testArabeQuestionsPageController
+                                              .previousPage(
+                                                  duration: const Duration(
+                                                      milliseconds: 1000),
+                                                  curve: Curves.easeIn);
+                                        },
+                                      ),
+                                    )
+                                  ],
+                                )
+                              : customButton()),
                     )
                   ],
                 ),
@@ -447,6 +383,103 @@ class _ArabeTestCarouselState extends State<ArabeTestCarousel> {
         ),
       ),
     );
+  }
+
+  Widget customButton() {
+    return RaisedButton(
+        elevation: 10.0,
+        color: isLastQuestion ? Colors.red[700] : Colors.blue[500],
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+          child: Text(
+            isLastQuestion
+                ? widget.isFirstTime
+                    ? "ابدأ الأختبار بالفرنسي".toUpperCase()
+                    : "إكتشف النتائج".toUpperCase()
+                : "السؤال التالى".toUpperCase(),
+            style: TextStyle(
+                fontSize: currentpage != widget.arabeTest.numOfQuestions - 1
+                    ? MediaQuery.of(context).size.width * 0.045
+                    : MediaQuery.of(context).size.width * 0.035,
+                color: Colors.white,
+                fontWeight: FontWeight.bold),
+          ),
+        ),
+        onPressed: listOfChoisesArabeAnswers[currentpage] == null
+            ? null
+            : () {
+                if (currentpage == widget.arabeTest.numOfQuestions - 1) {
+                  if (widget.isFirstTime == true) {
+                    // go to francais test
+                    print(answersDetailsAR);
+
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MakeFrancaisCandidateTest(
+                          isFirstTime: false,
+                          invitationKey: widget.invitationKey,
+                          listOfChoisesArabeAnswers: listOfChoisesArabeAnswers,
+                          francaisTest: widget.francaisTest,
+                          arabeTest: widget.arabeTest,
+                          answersDetailsAR: answersDetailsAR,
+                          email: widget.email,
+                        ),
+                      ),
+                    );
+                  } else {
+                    // finish the test
+                    /*print(answersDetailsAR);
+                                            print(widget.answersDetailsFR);*/
+
+                    CandidateTestAnswer candidateTestAnswer =
+                        new CandidateTestAnswer(
+                            email: widget.email,
+                            testID: widget.invitationKey.testID,
+                            numOfTestAnswersAR:
+                                widget.arabeTest.numOfTestAnswers,
+                            numOfTestAnswersFR:
+                                widget.francaisTest.numOfTestAnswers,
+                            numOfArabeAnswers: listOfChoisesArabeAnswers.length,
+                            numOfArabeQuestions:
+                                listOfChoisesArabeAnswers.length,
+                            numOfFrancaisAnswers:
+                                widget.listOfChoisesFrancaisAnswers.length,
+                            numOfFrancaisQuestions:
+                                widget.listOfChoisesFrancaisAnswers.length,
+                            totalQuestionsEachAnsAR:
+                                widget.arabeTest.numOfTestAnswers.toDouble(),
+                            totalQuestionsEachAnsFR:
+                                widget.francaisTest.numOfTestAnswers.toDouble(),
+                            arabeAnswers: listOfChoisesArabeAnswers,
+                            ansDetailsAR: answersDetailsAR,
+                            francaisAnswers:
+                                widget.listOfChoisesFrancaisAnswers,
+                            ansDetailsFR: widget.answersDetailsFR);
+                    
+                    showInSnackBar(
+                            "Merci! you will re-direct to see your results");
+                            
+                    /*dataFirebase.sendData(
+                        'CandidatesAnswers', candidateTestAnswer.toJson());*/
+
+                    /*updateCandidatesKey().then((value) {
+                      if (value == true) {
+                        showInSnackBar(
+                            "Merci! you will re-direct to see your results");
+                      }
+                    });*/
+
+                    Timer(const Duration(milliseconds: 2000),
+                        () => onClose(candidateTestAnswer));
+                  }
+                } else {
+                  // go to next page view but currentPage should != length-1
+                  _testArabeQuestionsPageController.nextPage(
+                      duration: const Duration(milliseconds: 1000),
+                      curve: Curves.easeIn);
+                }
+              });
   }
 
   Future<bool> updateCandidatesKey() async {
@@ -470,13 +503,24 @@ class _ArabeTestCarouselState extends State<ArabeTestCarousel> {
     return isFound;
   }
 
-  void onClose() {
-    Navigator.push(
+  void onClose(CandidateTestAnswer candidateTestAnswer) {
+    /*Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => ShowTestResult(
           email: widget.email,
           testID: widget.invitationKey.testID,
+        ),
+      ),
+    );*/
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CalculateResult(
+          candidateTestAnswer: candidateTestAnswer,
+          email: widget.email,
+          testID: widget.invitationKey.testID,
+          invitationKey: widget.invitationKey,
         ),
       ),
     );

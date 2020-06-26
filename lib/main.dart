@@ -22,6 +22,7 @@ class MyApp extends StatelessWidget {
     return Provider(
       auth: AuthService(),
       child: MaterialApp(
+        
         debugShowCheckedModeBanner: false,
         title: "test profiling",
         theme: ThemeData(
@@ -90,7 +91,7 @@ class HomeController extends StatelessWidget {
                             result: snapshot.data,
                           );
                         } else {
-                          widget = FirstView();
+                          widget = SignUpView(authFormType: AuthFormType.signIn);
                         }
 
                         return widget;
@@ -100,7 +101,7 @@ class HomeController extends StatelessWidget {
                     },
                   );
                 } else {
-                  return FirstView();
+                  return CandidateContinueInfo();
                 }
               }
           }

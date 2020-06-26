@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:tesapp/pages/candidate/arabeCandidateTest.dart';
+import 'package:tesapp/pages/candidate/calculateResult.dart';
 import 'package:tesapp/pages/candidate/candidateHome.dart';
 import 'package:tesapp/pages/candidate/testResult.dart';
 import 'package:tesapp/pages/formsFrancais.dart';
@@ -183,12 +184,14 @@ class _FrancaisTestCarouselState extends State<FrancaisTestCarousel> {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
-    return Center(
+    return Padding(
+      padding:
+          EdgeInsets.only(top: height > 600 ? height * 0.072 : height * 0.055),
       child: Card(
         elevation: 10.0,
         child: Container(
           width: width,
-          height: height * 0.75,
+          height: height > 600 ? height * 0.70 : height * 0.80,
           child: PageView.builder(
             controller: _testFrancaisQuestionsPageController,
             scrollDirection: Axis.horizontal,
@@ -209,203 +212,127 @@ class _FrancaisTestCarouselState extends State<FrancaisTestCarousel> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    Expanded(
-                      flex: 2,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 15.0),
-                        child: Text(
-                          (index + 1).toString() + ". " + question.question,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18.0),
-                        ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10.0),
+                      child: Text(
+                        (index + 1).toString() + ". " + question.question,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: question.question.length > 50 ? 15 : 18),
                       ),
                     ),
-                    Expanded(
-                      flex: 5,
-                      child: ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: widget.francaisTest.answers.length,
-                          itemBuilder: (ctx, indexVal) {
-                            /*testQuestionAnswer.add(new TestQuestionAnswer(
-                                questionAnswer: widget.test.answers[indexVal]));*/
+                    ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: widget.francaisTest.answers.length,
+                        itemBuilder: (ctx, indexVal) {
+                          /*testQuestionAnswer.add(new TestQuestionAnswer(
+                              questionAnswer: widget.test.answers[indexVal]));*/
 
-                            bool selectedAnswer = ((listOfTestQuestionAnswer[
-                                    currentpage])[indexVal])
-                                .isSelected;
-                            return Card(
-                              elevation: 20.0,
-                              color: selectedAnswer
-                                  ? isLastQuestion
-                                      ? Colors.red[700]
-                                      : Colors.blue[500]
-                                  : Colors.white,
-                              child: ListTile(
-                                title: Text(
-                                  (indexVal + 1).toString() +
-                                      ". " +
-                                      widget.francaisTest.answers[indexVal],
-                                  style: TextStyle(
-                                      fontSize: 17.0,
-                                      color: selectedAnswer
-                                          ? Colors.white
-                                          : Colors.black,
-                                      fontWeight: selectedAnswer
-                                          ? FontWeight.bold
-                                          : FontWeight.normal),
-                                ),
-                                onTap: () {
-                                  for (int i = 0;
-                                      i < widget.francaisTest.numOfTestAnswers;
-                                      i++) {
-                                    if (indexVal == i) {
-                                      ((listOfTestQuestionAnswer[currentpage])[
-                                              i])
-                                          .isSelected = true;
-                                    } else {
-                                      ((listOfTestQuestionAnswer[currentpage])[
-                                              i])
-                                          .isSelected = false;
-                                    }
-                                  }
-                                  setState(() {
-                                    listOfTestQuestionAnswer[currentpage] =
-                                        listOfTestQuestionAnswer[currentpage];
-                                    listOfChoisesFrancaisAnswers[currentpage] =
-                                        (widget.francaisTest.answers[indexVal])
-                                            .toLowerCase();
-                                    answersDetailsFR[
-                                        'Q' + (currentpage + 1).toString()] = {
-                                      '${(widget.francaisTest.answers[indexVal]).toLowerCase()}':
-                                          indexVal + 1
-                                    };
-                                  });
-                                },
+                          bool selectedAnswer = ((listOfTestQuestionAnswer[
+                                  currentpage])[indexVal])
+                              .isSelected;
+                          return Card(
+                            elevation: 20.0,
+                            color: selectedAnswer
+                                ? isLastQuestion
+                                    ? Colors.red[700]
+                                    : Colors.blue[500]
+                                : Colors.white,
+                            child: ListTile(
+                              title: Text(
+                                (indexVal + 1).toString() +
+                                    ". " +
+                                    widget.francaisTest.answers[indexVal],
+                                style: TextStyle(
+                                    fontSize: 17.0,
+                                    color: selectedAnswer
+                                        ? Colors.white
+                                        : Colors.black,
+                                    fontWeight: selectedAnswer
+                                        ? FontWeight.bold
+                                        : FontWeight.normal),
                               ),
-                            );
-                          }),
+                              onTap: () {
+                                for (int i = 0;
+                                    i < widget.francaisTest.numOfTestAnswers;
+                                    i++) {
+                                  if (indexVal == i) {
+                                    ((listOfTestQuestionAnswer[currentpage])[i])
+                                        .isSelected = true;
+                                  } else {
+                                    ((listOfTestQuestionAnswer[currentpage])[i])
+                                        .isSelected = false;
+                                  }
+                                }
+                                setState(() {
+                                  listOfTestQuestionAnswer[currentpage] =
+                                      listOfTestQuestionAnswer[currentpage];
+                                  listOfChoisesFrancaisAnswers[currentpage] =
+                                      (widget.francaisTest.answers[indexVal])
+                                          .toLowerCase();
+                                  answersDetailsFR[
+                                      'Q' + (currentpage + 1).toString()] = {
+                                    '${(widget.francaisTest.answers[indexVal]).toLowerCase()}':
+                                        indexVal + 1
+                                  };
+                                });
+                              },
+                            ),
+                          );
+                        }),
+                    SizedBox(
+                      height: height > 600 ? height * 0.04 : height * 0.02,
                     ),
                     Expanded(
-                        flex: 2,
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(vertical: 20.0),
-                          child: RaisedButton(
-                              elevation: 10.0,
-                              color: isLastQuestion
-                                  ? Colors.red[700]
-                                  : Colors.blue[500],
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                                child: Text(
-                                  isLastQuestion
-                                      ? widget.isFirstTime
-                                          ? "Commencer le test Arabe"
-                                              .toUpperCase()
-                                          : "Finish".toUpperCase()
-                                      : "Continue".toUpperCase(),
-                                  style: TextStyle(
-                                      fontSize: 15.0,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
+                        child: Container(
+                      alignment: Alignment.center,
+                      child: currentpage != 0
+                          ? Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: <Widget>[
+                                Expanded(
+                                  child: RaisedButton(
+                                    elevation: 10.0,
+                                    color: Colors.blue[500],
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10, vertical: 15.0),
+                                      child: Text(
+                                        "Question Précédente".toUpperCase(),
+                                        style: TextStyle(
+                                            fontSize: currentpage !=
+                                                    widget.francaisTest
+                                                            .numOfQuestions -
+                                                        1
+                                                ? MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.040
+                                                : MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.030,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                    onPressed: () {
+                                      _testFrancaisQuestionsPageController
+                                          .previousPage(
+                                              duration: const Duration(
+                                                  milliseconds: 1000),
+                                              curve: Curves.easeIn);
+                                    },
+                                  ),
                                 ),
-                              ),
-                              onPressed:
-                                  listOfChoisesFrancaisAnswers[currentpage] ==
-                                          null
-                                      ? null
-                                      : () {
-                                          if (currentpage ==
-                                              widget.francaisTest
-                                                      .numOfQuestions -
-                                                  1) {
-                                            if (widget.isFirstTime == true) {
-                                              // go to arabe test
-                                              print(answersDetailsFR);
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      MakeArabeCandidateTestApp(
-                                                    isFirstTime: false,
-                                                    invitationKey:
-                                                        widget.invitationKey,
-                                                    listOfChoisesFrancaisAnswers:
-                                                        listOfChoisesFrancaisAnswers,
-                                                    arabeTest: widget.arabeTest,
-                                                    francaisTest: widget.francaisTest,
-                                                    answersDetailsFR:
-                                                        answersDetailsFR,
-                                                    email: widget.email,
-                                                  ),
-                                                ),
-                                              );
-                                            } else {
-                                              // finish the test
-                                              /*print(answersDetailsFR);
-                                              print(widget.answersDetailsAR);*/
-
-                                              CandidateTestAnswer candidateTestAnswer = new CandidateTestAnswer(
-                                                  email: widget.email,
-                                                  testID: widget
-                                                      .invitationKey.testID,
-                                                  numOfTestAnswersAR: widget
-                                                      .arabeTest
-                                                      .numOfTestAnswers,
-                                                  numOfTestAnswersFR: widget
-                                                      .francaisTest
-                                                      .numOfTestAnswers,
-                                                  numOfArabeAnswers: widget
-                                                      .listOfChoisesArabeAnswers
-                                                      .length,
-                                                  numOfArabeQuestions: widget
-                                                      .listOfChoisesArabeAnswers
-                                                      .length,
-                                                  numOfFrancaisAnswers:
-                                                      listOfChoisesFrancaisAnswers
-                                                          .length,
-                                                  numOfFrancaisQuestions:
-                                                      listOfChoisesFrancaisAnswers
-                                                          .length,
-                                                  totalQuestionsEachAnsAR: widget
-                                                      .arabeTest
-                                                      .numOfTestAnswers
-                                                      .toDouble(),
-                                                  totalQuestionsEachAnsFR:
-                                                      widget.francaisTest
-                                                          .numOfTestAnswers
-                                                          .toDouble(),
-                                                  arabeAnswers: widget.listOfChoisesArabeAnswers,
-                                                  ansDetailsAR: widget.answersDetailsAR,
-                                                  francaisAnswers: listOfChoisesFrancaisAnswers,
-                                                  ansDetailsFR: answersDetailsFR);
-
-                                              dataFirebase.sendData(
-                                                  'CandidatesAnswers',
-                                                  candidateTestAnswer.toJson());
-
-                                              // update CandidatesKey
-                                              updateCandidatesKey()
-                                                  .then((value) {
-                                                if (value == true) {
-                                                  showInSnackBar(
-                                                      "Merci! you will re-direct to see your results");
-                                                }
-                                              });
-
-                                              Timer(
-                                                  const Duration(
-                                                      milliseconds: 2000),
-                                                  onClose);
-                                            }
-                                          } else {
-                                            // go to next page view but currentPage should != length-1
-                                            _testFrancaisQuestionsPageController
-                                                .nextPage(
-                                                    duration: const Duration(
-                                                        milliseconds: 1000),
-                                                    curve: Curves.easeIn);
-                                          }
-                                        }),
-                        ))
+                                SizedBox(
+                                  width: 5.0,
+                                ),
+                                Expanded(child: customButton()),
+                              ],
+                            )
+                          : customButton(),
+                    ))
                   ],
                 ),
               );
@@ -419,6 +346,105 @@ class _FrancaisTestCarouselState extends State<FrancaisTestCarousel> {
         ),
       ),
     );
+  }
+
+  Widget customButton() {
+    return RaisedButton(
+        elevation: 10.0,
+        color: isLastQuestion ? Colors.red[700] : Colors.blue[500],
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 15.0),
+          child: Text(
+            isLastQuestion
+                ? widget.isFirstTime
+                    ? "Commencer le test Arabe".toUpperCase()
+                    : "Découvrez les résultats".toUpperCase()
+                : "Question Suivant".toUpperCase(),
+            style: TextStyle(
+                fontSize: currentpage != widget.francaisTest.numOfQuestions - 1
+                    ? MediaQuery.of(context).size.width * 0.040
+                    : MediaQuery.of(context).size.width * 0.030,
+                color: Colors.white,
+                fontWeight: FontWeight.bold),
+          ),
+        ),
+        onPressed: listOfChoisesFrancaisAnswers[currentpage] == null
+            ? null
+            : () {
+                if (currentpage == widget.francaisTest.numOfQuestions - 1) {
+                  if (widget.isFirstTime == true) {
+                    // go to arabe test
+                    print(answersDetailsFR);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MakeArabeCandidateTestApp(
+                          isFirstTime: false,
+                          invitationKey: widget.invitationKey,
+                          listOfChoisesFrancaisAnswers:
+                              listOfChoisesFrancaisAnswers,
+                          arabeTest: widget.arabeTest,
+                          francaisTest: widget.francaisTest,
+                          answersDetailsFR: answersDetailsFR,
+                          email: widget.email,
+                        ),
+                      ),
+                    );
+                  } else {
+                    // finish the test
+                    /*print(answersDetailsFR);
+                                              print(widget.answersDetailsAR);*/
+
+                    CandidateTestAnswer candidateTestAnswer =
+                        new CandidateTestAnswer(
+                            email: widget.email,
+                            testID: widget.invitationKey.testID,
+                            numOfTestAnswersAR:
+                                widget.arabeTest.numOfTestAnswers,
+                            numOfTestAnswersFR:
+                                widget.francaisTest.numOfTestAnswers,
+                            numOfArabeAnswers:
+                                widget.listOfChoisesArabeAnswers.length,
+                            numOfArabeQuestions:
+                                widget.listOfChoisesArabeAnswers.length,
+                            numOfFrancaisAnswers:
+                                listOfChoisesFrancaisAnswers.length,
+                            numOfFrancaisQuestions:
+                                listOfChoisesFrancaisAnswers.length,
+                            totalQuestionsEachAnsAR:
+                                widget.arabeTest.numOfTestAnswers.toDouble(),
+                            totalQuestionsEachAnsFR:
+                                widget.francaisTest.numOfTestAnswers.toDouble(),
+                            arabeAnswers: widget.listOfChoisesArabeAnswers,
+                            ansDetailsAR: widget.answersDetailsAR,
+                            francaisAnswers: listOfChoisesFrancaisAnswers,
+                            ansDetailsFR: answersDetailsFR);
+                    
+                    showInSnackBar(
+                            "Merci! you will re-direct to see your results");
+                            
+                    /*dataFirebase.sendData(
+                        'CandidatesAnswers', candidateTestAnswer.toJson());*/
+
+                    // update CandidatesKey
+                    /*updateCandidatesKey().then((value) {
+                      if (value == true) {
+                        showInSnackBar(
+                            "Merci! you will re-direct to see your results");
+                      }
+                    });*/
+
+                    //Timer(const Duration(milliseconds: 2000), onClose);
+                    Timer(const Duration(milliseconds: 2000),
+                        () => onClose(candidateTestAnswer));
+                  }
+                } else {
+                  // go to next page view but currentPage should != length-1
+                  _testFrancaisQuestionsPageController.nextPage(
+                      duration: const Duration(milliseconds: 1000),
+                      curve: Curves.easeIn);
+                }
+              });
   }
 
   Future<bool> updateCandidatesKey() async {
@@ -442,13 +468,24 @@ class _FrancaisTestCarouselState extends State<FrancaisTestCarousel> {
     return isFound;
   }
 
-  void onClose() {
-    Navigator.push(
+  void onClose(CandidateTestAnswer candidateTestAnswer) {
+    /*Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => ShowTestResult(
           email: widget.email,
           testID: widget.invitationKey.testID,
+        ),
+      ),
+    );*/
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CalculateResult(
+          candidateTestAnswer: candidateTestAnswer,
+          email: widget.email,
+          testID: widget.invitationKey.testID,
+          invitationKey: widget.invitationKey,
         ),
       ),
     );

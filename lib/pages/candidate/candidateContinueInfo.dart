@@ -7,6 +7,7 @@ import 'package:tesapp/pages/candidate/testResult.dart';
 import 'package:tesapp/pages/candidate/welcomeScreen.dart';
 import 'package:tesapp/pages/invitation_test.dart';
 import 'package:tesapp/services/auth_service.dart';
+import 'package:tesapp/views/sign_up_view.dart';
 
 class CandidateContinueInfo extends StatelessWidget {
   @override
@@ -35,108 +36,143 @@ class _CandidateInfoState extends State<CandidateInfo> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 25.0),
-        color: primaryColor,
-        alignment: Alignment.center,
-        child: Form(
-          key: formKey,
-          child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Column(
-              children: <Widget>[
-                SizedBox(height: MediaQuery.of(context).size.height * 0.05),
-                Text(
-                  "Enter Your E-mail",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 35,
-                    color: Colors.white,
-                  ),
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.015),
-                TextFormField(
-                  controller: candidateEmail,
-                  validator: EmailValidator.validate,
-                  style: TextStyle(fontSize: 22.0),
-                  decoration: InputDecoration(
-                    hintText: "Your E-Mail",
-                    filled: true,
-                    fillColor: Colors.white,
-                    focusColor: Colors.white,
-                    enabledBorder: OutlineInputBorder(
-                        borderSide:
-                            BorderSide(color: Colors.white, width: 0.0)),
-                    contentPadding: const EdgeInsets.only(
-                        left: 14.0, bottom: 10.0, top: 10.0),
-                  ),
-                  onSaved: (value) {
-                    _email = value;
-                  },
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.025),
-                Text(
-                  "Enter Password",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 35,
-                    color: Colors.white,
-                  ),
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.015),
-                TextFormField(
-                  controller: candidatePassword,
-                  validator: (val) {
-                    if (val.isEmpty)
-                      return 'Cannot be empty';
-                    else
-                      return null;
-                  },
-                  style: TextStyle(fontSize: 22.0),
-                  decoration: InputDecoration(
-                    hintText: "Password e.g. ejHk==",
-                    filled: true,
-                    fillColor: Colors.white,
-                    focusColor: Colors.white,
-                    enabledBorder: OutlineInputBorder(
-                        borderSide:
-                            BorderSide(color: Colors.white, width: 0.0)),
-                    contentPadding: const EdgeInsets.only(
-                        left: 14.0, bottom: 10.0, top: 10.0),
-                  ),
-                  onSaved: (value) {
-                    _password = value;
-                  },
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.025),
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.7,
-                  child: RaisedButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.0)),
-                    color: Colors.white,
-                    textColor: primaryColor,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        "Continue",
+      body: Directionality(
+        textDirection: TextDirection.rtl,
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 25.0),
+          color: primaryColor,
+          alignment: Alignment.center,
+          child: Form(
+            key: formKey,
+            child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: Column(
+                children: <Widget>[
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.05),
+                      Text(
+                        "ادخل بريدك الالكتروني:",
                         style: TextStyle(
-                            fontSize: 20.0, fontWeight: FontWeight.w300),
+                          fontSize: MediaQuery.of(context).size.width * 0.06,
+                          color: Colors.white,
+                        ),
                       ),
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.005),
+                      TextFormField(
+                        controller: candidateEmail,
+                        validator: EmailValidator.validate,
+                        style: TextStyle(fontSize: 22.0),
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.white,
+                          focusColor: Colors.white,
+                          enabledBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Colors.white, width: 0.0)),
+                          contentPadding: const EdgeInsets.only(
+                              right: 14.0, bottom: 10.0, top: 10.0),
+                        ),
+                        onSaved: (value) {
+                          _email = value;
+                        },
+                      ),
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.015),
+                      Text(
+                        "ادخل رقمك السري:",
+                        style: TextStyle(
+                          fontSize: MediaQuery.of(context).size.width * 0.06,
+                          color: Colors.white,
+                        ),
+                      ),
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.005),
+                      TextFormField(
+                        controller: candidatePassword,
+                        validator: (val) {
+                          if (val.isEmpty)
+                            return 'لا يمكن ان يكون فارغا';
+                          else
+                            return null;
+                        },
+                        style: TextStyle(fontSize: 22.0),
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.white,
+                          focusColor: Colors.white,
+                          enabledBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Colors.white, width: 0.0)),
+                          contentPadding: const EdgeInsets.only(
+                              right: 14.0, bottom: 10.0, top: 10.0),
+                        ),
+                        onSaved: (value) {
+                          _password = value;
+                        },
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.025),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.7,
+                    child: RaisedButton(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0)),
+                      color: Colors.white,
+                      textColor: primaryColor,
+                      child: Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Text(
+                          "تسجيل دخول",
+                          style: TextStyle(
+                              fontSize: 20.0, fontWeight: FontWeight.w300),
+                        ),
+                      ),
+                      onPressed: submit,
                     ),
-                    onPressed: submit,
                   ),
-                ),
-                FlatButton(
-                  child: Text(
-                    "Aren't candidate?, be coach and click now",
-                    style: TextStyle(color: Colors.white),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.025),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.7,
+                    child: RaisedButton(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0)),
+                      color: Colors.white,
+                      textColor: primaryColor,
+                      child: Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Text(
+                          "إنشاء حساب جديد",
+                          style: TextStyle(
+                              fontSize: 20.0, fontWeight: FontWeight.w300),
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                SignUpView(authFormType: AuthFormType.signUp),
+                          ),
+                        );
+                      },
+                    ),
                   ),
-                  onPressed: () {
-                    Navigator.of(context).pushReplacementNamed('/signIn');
-                  },
-                ),
-              ],
+                  /*FlatButton(
+                    child: Text(
+                      "Aren't candidate?, be coach and click now",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pushReplacementNamed('/signIn');
+                    },
+                  ),*/
+                ],
+              ),
             ),
           ),
         ),
@@ -194,7 +230,6 @@ class _CandidateInfoState extends State<CandidateInfo> {
         if (invitationKey.email == _email && invitationKey.key == _password) {
           foundPassword = true;
           if (invitationKey.finished == false) {
-            
             // go to welcome screen
             final prefs = await SharedPreferences.getInstance();
             final key = 'userType';
@@ -216,7 +251,7 @@ class _CandidateInfoState extends State<CandidateInfo> {
           } else {
             // show msg with This test is not availabe yet
             showInSnackBar(
-                "This Test was finished, see your result in your e-mail");
+                "هذا الاختبار لقد انهيته بالفعل من فضلك راجع مسؤولك");
             /*Navigator.push(
               context,
               MaterialPageRoute(
@@ -228,12 +263,12 @@ class _CandidateInfoState extends State<CandidateInfo> {
             );*/
             //break;
           }
-        } 
+        }
       }
 
-      if(foundPassword == false){
+      if (foundPassword == false) {
         showInSnackBar(
-                "Uncorrect password!, please check your mail again, or contact with your coach");
+            "هذا الباسورد الذي ادخلته خطأ من فضلك تأكد من ايميلك مرة اخرى او تواصل مع مسؤولك");
       }
 
       /*final key2 = 'userEmail';
@@ -242,7 +277,8 @@ class _CandidateInfoState extends State<CandidateInfo> {
       print('value is $value2');*/
 
     } else {
-      showInSnackBar("Uncorrect Email, try again, or contact with your coach");
+      showInSnackBar(
+          "هذا الايميل الذى ادخلته خطأ من فضلك حاول مرة اخرى او تواصل مع مسؤولك");
     }
   }
 

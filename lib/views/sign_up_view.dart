@@ -32,7 +32,7 @@ class _SignUpViewState extends State<SignUpView> {
   _SignUpViewState({this.authFormType});
 
   final formKey = GlobalKey<FormState>();
-  String _email, _password, _name, _warning;
+  String _email, _password, _name, _warning, _birthday, _job;
   TextEditingController _c;
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -186,7 +186,7 @@ class _SignUpViewState extends State<SignUpView> {
                 showAlert(),
                 SizedBox(height: _height * 0.025),
                 buildHeaderText(),
-                SizedBox(height: _height * 0.05),
+                SizedBox(height: _height * 0.035),
                 Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: Form(
@@ -299,6 +299,28 @@ class _SignUpViewState extends State<SignUpView> {
     );
     textFields.add(SizedBox(height: 20));
 
+    if ([AuthFormType.signUp, AuthFormType.convert].contains(authFormType)) {
+      textFields.add(
+        TextFormField(
+          validator: NameValidator.validate,
+          style: TextStyle(fontSize: 22.0),
+          decoration: buildSignUpInputDecoration("Birthday"),
+          onSaved: (value) => _birthday = value,
+        ),
+      );
+      textFields.add(SizedBox(height: 20));
+
+      textFields.add(
+        TextFormField(
+          validator: NameValidator.validate,
+          style: TextStyle(fontSize: 22.0),
+          decoration: buildSignUpInputDecoration("Job"),
+          onSaved: (value) => _job = value,
+        ),
+      );
+      textFields.add(SizedBox(height: 30));
+    }
+
     return textFields;
   }
 
@@ -342,14 +364,14 @@ class _SignUpViewState extends State<SignUpView> {
 
     return [
       Container(
-        width: MediaQuery.of(context).size.width * 0.7,
+        width: MediaQuery.of(context).size.width * 0.5,
         child: RaisedButton(
           shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
           color: Colors.white,
           textColor: primaryColor,
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(15.0),
             child: Text(
               _submitButtonText,
               style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w300),
@@ -380,7 +402,6 @@ class _SignUpViewState extends State<SignUpView> {
                       CandidateContinueInfo(),
                 ),
               );
-          
         },
       ),
       buildSocialIcons(_showSocial),

@@ -98,7 +98,7 @@ class _WelcomeCandidateScreenState extends State<WelcomeCandidateScreen> {
                           color: Colors.blue[500],
                           child: Padding(
                             padding: const EdgeInsets.symmetric(vertical: 18.0),
-                            child: Text("Make a test now".toUpperCase(),
+                            child: Text("ابدأ الاختبار الآن",
                                 style: TextStyle(
                                     fontSize: 15.0,
                                     color: Colors.white,
