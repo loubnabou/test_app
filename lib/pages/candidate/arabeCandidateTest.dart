@@ -85,7 +85,9 @@ class _ArabeCandidateTestState extends State<ArabeCandidateTest> {
         backgroundColor: Colors.white60,
         appBar: AppBar(
           title: Text("الأختبار"),
-          automaticallyImplyLeading: false,
+          automaticallyImplyLeading: widget.isFirstTime ? true : false,
+          centerTitle: true,
+          backgroundColor: Color(0xFF0513AD),
         ),
         body: widget.isFirstTime
             ? FutureBuilder<QuerySnapshot>(
@@ -221,10 +223,15 @@ class _ArabeTestCarouselState extends State<ArabeTestCarousel> {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     return Padding(
-      padding:
-          EdgeInsets.only(top: height > 600 ? height * 0.072 : height * 0.055),
+      padding: EdgeInsets.only(
+          top: height > 600 ? height * 0.072 : height * 0.055,
+          left: width > 350 ? width * 0.05 : width * 0.03,
+          right: width > 350 ? width * 0.05 : width * 0.03),
       child: Card(
         elevation: 10.0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(24.0),
+        ),
         child: Container(
           width: width,
           height: height > 600 ? height * 0.70 : height * 0.80,
@@ -243,78 +250,100 @@ class _ArabeTestCarouselState extends State<ArabeTestCarousel> {
               Question question = Question.fromJson(widget
                   .arabeTest.questions['Question' + (index + 1).toString()]);
               return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
+                    //(index + 1).toString() + ". " +
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10.0),
+                      child: Text(
+                        (index + 1).toString() +
+                            "/" +
+                            widget.arabeTest.numOfQuestions.toString(),
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: Color(0xFFFF0000),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15),
+                      ),
+                    ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 10.0),
                       child: Text(
-                        (index + 1).toString() + ". " + question.question,
+                        question.question,
+                        textAlign: TextAlign.center,
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: question.question.length > 50 ? 15 : 18),
                       ),
                     ),
-                    ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: widget.arabeTest.answers.length,
-                        itemBuilder: (ctx, indexVal) {
-                          /*testQuestionAnswer.add(new TestQuestionAnswer(
-                              questionAnswer: widget.test.answers[indexVal]));*/
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: widget.arabeTest.answers.length,
+                          itemBuilder: (ctx, indexVal) {
+                            /*testQuestionAnswer.add(new TestQuestionAnswer(
+                                questionAnswer: widget.test.answers[indexVal]));*/
 
-                          bool selectedAnswer = ((listOfTestQuestionAnswer[
-                                  currentpage])[indexVal])
-                              .isSelected;
-                          return Card(
-                            elevation: 20.0,
-                            color: selectedAnswer
-                                ? isLastQuestion
-                                    ? Colors.red[700]
-                                    : Colors.blue[500]
-                                : Colors.white,
-                            child: ListTile(
-                              title: Text(
-                                (indexVal + 1).toString() +
-                                    ". " +
-                                    widget.arabeTest.answers[indexVal],
-                                style: TextStyle(
-                                    fontSize: 17.0,
-                                    color: selectedAnswer
-                                        ? Colors.white
-                                        : Colors.black,
-                                    fontWeight: selectedAnswer
-                                        ? FontWeight.bold
-                                        : FontWeight.normal),
+                            bool selectedAnswer = ((listOfTestQuestionAnswer[
+                                    currentpage])[indexVal])
+                                .isSelected;
+                            return Card(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12.0)
                               ),
-                              onTap: () {
-                                for (int i = 0;
-                                    i < widget.arabeTest.numOfTestAnswers;
-                                    i++) {
-                                  if (indexVal == i) {
-                                    ((listOfTestQuestionAnswer[currentpage])[i])
-                                        .isSelected = true;
-                                  } else {
-                                    ((listOfTestQuestionAnswer[currentpage])[i])
-                                        .isSelected = false;
+                              elevation: 20.0,
+                              color: selectedAnswer
+                                  ? isLastQuestion
+                                      ? Color(0xFFFF0000)
+                                      : Color(0xFF0513AD)
+                                  : Color(0xFF3445FA),
+                              child: ListTile(
+                                title: Text(
+                                  /*(indexVal + 1).toString() +
+                                      ". " +*/
+                                  widget.arabeTest.answers[indexVal],
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 17.0,
+                                      color: selectedAnswer
+                                          ? Colors.white
+                                          : Colors.white,
+                                      fontWeight: selectedAnswer
+                                          ? FontWeight.bold
+                                          : FontWeight.normal),
+                                ),
+                                onTap: () {
+                                  for (int i = 0;
+                                      i < widget.arabeTest.numOfTestAnswers;
+                                      i++) {
+                                    if (indexVal == i) {
+                                      ((listOfTestQuestionAnswer[currentpage])[i])
+                                          .isSelected = true;
+                                    } else {
+                                      ((listOfTestQuestionAnswer[currentpage])[i])
+                                          .isSelected = false;
+                                    }
                                   }
-                                }
-                                setState(() {
-                                  listOfTestQuestionAnswer[currentpage] =
-                                      listOfTestQuestionAnswer[currentpage];
-                                  listOfChoisesArabeAnswers[currentpage] =
-                                      widget.arabeTest.answers[indexVal];
-                                  answersDetailsAR[
-                                      'Q' + (currentpage + 1).toString()] = {
-                                    '${(widget.arabeTest.answers[indexVal]).toLowerCase()}':
-                                        indexVal + 1
-                                  };
-                                });
-                              },
-                            ),
-                          );
-                        }),
+                                  setState(() {
+                                    listOfTestQuestionAnswer[currentpage] =
+                                        listOfTestQuestionAnswer[currentpage];
+                                    listOfChoisesArabeAnswers[currentpage] =
+                                        widget.arabeTest.answers[indexVal];
+                                    answersDetailsAR[
+                                        'Q' + (currentpage + 1).toString()] = {
+                                      '${(widget.arabeTest.answers[indexVal]).toLowerCase()}':
+                                          indexVal + 1
+                                    };
+                                  });
+                                },
+                              ),
+                            );
+                          }),
+                    ),
                     SizedBox(
                       height: height > 600 ? height * 0.04 : height * 0.02,
                     ),
@@ -329,15 +358,15 @@ class _ArabeTestCarouselState extends State<ArabeTestCarousel> {
                                   children: <Widget>[
                                     Expanded(child: customButton()),
                                     SizedBox(
-                                      width: 10.0,
+                                      width: width > 350 ? width*0.03 : width*0.01,
                                     ),
                                     Expanded(
                                       child: RaisedButton(
                                         elevation: 10.0,
-                                        color: Colors.blue[500],
+                                        color: Color(0xFF0513AD),
                                         child: Padding(
                                           padding: const EdgeInsets.symmetric(
-                                              horizontal: 10, vertical: 10.0),
+                                              horizontal: 5, vertical: 10.0),
                                           child: Text(
                                             "السؤال السابق".toUpperCase(),
                                             style: TextStyle(
@@ -352,7 +381,7 @@ class _ArabeTestCarouselState extends State<ArabeTestCarousel> {
                                                     : MediaQuery.of(context)
                                                             .size
                                                             .width *
-                                                        0.035,
+                                                        0.030,
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.bold),
                                           ),
@@ -388,9 +417,9 @@ class _ArabeTestCarouselState extends State<ArabeTestCarousel> {
   Widget customButton() {
     return RaisedButton(
         elevation: 10.0,
-        color: isLastQuestion ? Colors.red[700] : Colors.blue[500],
+        color: isLastQuestion ? Color(0xFFFF0000) : Color(0xFF0513AD),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+          padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0),
           child: Text(
             isLastQuestion
                 ? widget.isFirstTime
@@ -400,7 +429,7 @@ class _ArabeTestCarouselState extends State<ArabeTestCarousel> {
             style: TextStyle(
                 fontSize: currentpage != widget.arabeTest.numOfQuestions - 1
                     ? MediaQuery.of(context).size.width * 0.045
-                    : MediaQuery.of(context).size.width * 0.035,
+                    : MediaQuery.of(context).size.width * 0.030,
                 color: Colors.white,
                 fontWeight: FontWeight.bold),
           ),
@@ -456,10 +485,10 @@ class _ArabeTestCarouselState extends State<ArabeTestCarousel> {
                             francaisAnswers:
                                 widget.listOfChoisesFrancaisAnswers,
                             ansDetailsFR: widget.answersDetailsFR);
-                    
+
                     showInSnackBar(
-                            "Merci! you will re-direct to see your results");
-                            
+                        "شكرا على تعاونك سيتم تحويلك الأن لحساب نتيجتك");
+
                     /*dataFirebase.sendData(
                         'CandidatesAnswers', candidateTestAnswer.toJson());*/
 
@@ -518,8 +547,8 @@ class _ArabeTestCarouselState extends State<ArabeTestCarousel> {
       MaterialPageRoute(
         builder: (context) => CalculateResult(
           candidateTestAnswer: candidateTestAnswer,
-          email: widget.email,
-          testID: widget.invitationKey.testID,
+          /*email: widget.email,
+          testID: widget.invitationKey.testID,*/
           invitationKey: widget.invitationKey,
         ),
       ),
@@ -527,7 +556,8 @@ class _ArabeTestCarouselState extends State<ArabeTestCarousel> {
   }
 
   void showInSnackBar(String value) {
-    widget.scaffoldKey.currentState
-        .showSnackBar(new SnackBar(content: new Text(value)));
+    widget.scaffoldKey.currentState.showSnackBar(new SnackBar(
+        content: Directionality(
+            textDirection: TextDirection.rtl, child: new Text(value))));
   }
 }

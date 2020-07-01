@@ -149,14 +149,16 @@ class ShowTestResult extends StatelessWidget {
                     }
 
                     /*print(ansScoreAR);
-                    print(ansScoreFR);*/
+                    print(ansScoreFR);
+                    print(percentageAR);
+                    print(percentageFR);*/
 
                     List<BarChartGroupData> listOfItems = [];
                     for (int i = 0; i < ansScoreAR.length; i++) {
                       int arScore = ansScoreAR[ansScoreAR.keys.elementAt(i)];
                       int frScore = ansScoreFR[ansScoreFR.keys.elementAt(i)];
-                      var item = makeGroupData(i, arScore.toDouble(),
-                          frScore.toDouble(), colors[0], colors[1]);
+                      var item = makeGroupData(i, (arScore.toDouble()/percentageAR)*100,
+                          (frScore.toDouble()/percentageFR)*100, colors[0], colors[1]);
                       listOfItems.add(item);
                     }
                     final raw = listOfItems;
@@ -409,12 +411,12 @@ class ShowTestResult extends StatelessWidget {
         x: x,
         barRods: [
           BarChartRodData(
-              y: y1,
+              y: double.parse(y1.toStringAsFixed(1)),
               color: c1,
               width: 15.0,
               borderRadius: BorderRadius.circular(0.0)),
           BarChartRodData(
-              y: y2,
+              y: double.parse(y2.toStringAsFixed(1)),
               color: c2,
               width: 15.0,
               borderRadius: BorderRadius.circular(0.0))

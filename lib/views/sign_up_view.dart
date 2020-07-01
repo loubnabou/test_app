@@ -97,17 +97,17 @@ class _SignUpViewState extends State<SignUpView> {
               );
             }*/
             //Navigator.of(context).pushReplacementNamed('/home', arguments: result);
-            
-              FirebaseUser result =
-                  await auth.signInWithEmailAndPassword(_email, _password);
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) =>
-                      IDOfCoach(user: result, actionType: 'sign_in'),
-                ),
-              );
-            
+
+            FirebaseUser result =
+                await auth.signInWithEmailAndPassword(_email, _password);
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    IDOfCoach(user: result, actionType: 'sign_in'),
+              ),
+            );
+
             break;
           case AuthFormType.signUp:
             FirebaseUser result = await auth.createUserWithEmailAndPassword(
@@ -175,28 +175,32 @@ class _SignUpViewState extends State<SignUpView> {
       return Scaffold(
         key: _scaffoldKey,
         resizeToAvoidBottomPadding: false,
-        body: Container(
-          color: primaryColor,
-          height: _height,
-          width: _width,
-          child: SafeArea(
-            child: Column(
-              children: <Widget>[
-                SizedBox(height: _height * 0.025),
-                showAlert(),
-                SizedBox(height: _height * 0.025),
-                buildHeaderText(),
-                SizedBox(height: _height * 0.035),
-                Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Form(
-                    key: formKey,
-                    child: Column(
-                      children: buildInputs() + buildButtons(),
+        body: Directionality(
+          textDirection: TextDirection.ltr,
+          child: Container(
+            color: primaryColor,
+            height: _height,
+            width: _width,
+            child: SafeArea(
+              child: Column(
+                children: <Widget>[
+                  SizedBox(height: _height * 0.025),
+                  showAlert(),
+                  SizedBox(height: _height * 0.025),
+                  buildHeaderText(),
+                  //buildLogo(),
+                  SizedBox(height: _height * 0.035),
+                  Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Form(
+                      key: formKey,
+                      child: Column(
+                        children: buildInputs() + buildButtons(),
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
@@ -239,6 +243,23 @@ class _SignUpViewState extends State<SignUpView> {
     }
     return SizedBox(
       height: 0,
+    );
+  }
+
+  Widget buildLogo() {
+    return Center(
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.75,
+        height: MediaQuery.of(context).size.height * 0.25,
+        decoration: BoxDecoration(
+            //border: Border.all(width: 2.5, color: Colors.black),
+            //borderRadius: BorderRadius.circular(24.0),
+            image: DecorationImage(
+                image: AssetImage(
+                  'assets/images/logos/sign_up.png',
+                ),
+                fit: BoxFit.cover)),
+      ),
     );
   }
 
@@ -396,12 +417,11 @@ class _SignUpViewState extends State<SignUpView> {
         ),
         onPressed: () {
           Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) =>
-                      CandidateContinueInfo(),
-                ),
-              );
+            context,
+            MaterialPageRoute(
+              builder: (context) => CandidateContinueInfo(),
+            ),
+          );
         },
       ),
       buildSocialIcons(_showSocial),

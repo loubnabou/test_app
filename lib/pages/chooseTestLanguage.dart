@@ -12,7 +12,10 @@ class ChooseTestLanguage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Test Language"),
+        title: Text("إختيار اللغة"),
+        centerTitle: true,
+        automaticallyImplyLeading:false,
+        backgroundColor: Color(0xFF0513AD),
       ),
       body: Center(
         child: Column(
@@ -31,19 +34,20 @@ class ChooseTestLanguage extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  height: 8.0,
+                  height: 20.0,
                 ),
                 RaisedButton(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.0),
                   ),
+                  color: Color(0xFF3445FA),
                   elevation: 20.0,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 20.0, vertical: 10.0),
                     child: Text(
-                      'Arabe'.toUpperCase(),
-                      style: TextStyle(color: Colors.grey, fontSize: 22),
+                      'إبدأ الاختبار بالعربية',
+                      style: TextStyle(color: Colors.white, fontSize: 22),
                     ),
                   ),
                   onPressed: () {
@@ -76,19 +80,20 @@ class ChooseTestLanguage extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  height: 8.0,
+                  height: 20.0,
                 ),
                 RaisedButton(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.0),
                   ),
+                  color: Color(0xFF3445FA),
                   elevation: 20.0,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 20.0, vertical: 10.0),
                     child: Text(
-                      'Francais'.toUpperCase(),
-                      style: TextStyle(color: Colors.grey[500], fontSize: 22),
+                      'إبدأ الأختبار بالفرنسية',
+                      style: TextStyle(color: Colors.white, fontSize: 22),
                     ),
                   ),
                   onPressed: () {

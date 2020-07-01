@@ -20,11 +20,10 @@ class _WelcomeCandidateScreenState extends State<WelcomeCandidateScreen> {
   PageController _welcomeScreenPageController;
   int currentpage = 0;
   List<String> listOfImages = [
-    'assets/images/welcomeScreens/first_screen.jpg',
-    'assets/images/welcomeScreens/second_screen.jpg',
-    'assets/images/welcomeScreens/third_screen.jpg',
-    'assets/images/welcomeScreens/fourth_screen.jpg',
-    'assets/images/welcomeScreens/fifth_screen.jpg'
+    'assets/images/welcomeScreens/first_screen.png',
+    'assets/images/welcomeScreens/second_screen.png',
+    'assets/images/welcomeScreens/third_screen.png',
+    'assets/images/welcomeScreens/fourth_screen.png'
   ];
 
   @override
@@ -48,75 +47,86 @@ class _WelcomeCandidateScreenState extends State<WelcomeCandidateScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        body: Card(
-          elevation: 20.0,
-          child: Stack(children: <Widget>[
-            PageView(
-              controller: _welcomeScreenPageController,
-              scrollDirection: Axis.horizontal,
-              reverse: false,
-              children: listOfImages
-                  .map(
-                    (image) => Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height,
-                      decoration: BoxDecoration(
-                          border: Border.all(width: 2.5, color: Colors.black),
-                          borderRadius: BorderRadius.circular(24.0),
-                          image: DecorationImage(
-                              image: AssetImage(
-                                image,
-                              ),
-                              fit: BoxFit.cover)),
-                    ),
-                  )
-                  .toList(),
-              onPageChanged: (pageNum) {
-                setState(() {
-                  currentpage = pageNum;
-                });
-              },
-            ),
-            currentpage != listOfImages.length - 1
-                ? Positioned(
-                    bottom: 20.0,
-                    left: 25.0,
-                    right: 25.0,
-                    child: PageIndicator(
-                      numOfIndicators: listOfImages.length,
-                      selectedPage: currentpage,
-                    ))
-                : Positioned(
-                    bottom: 20.0,
-                    left: 25.0,
-                    right: 25.0,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 60.0),
-                      child: RaisedButton(
-                          elevation: 10.0,
-                          color: Colors.blue[500],
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 18.0),
-                            child: Text("ابدأ الاختبار الآن",
-                                style: TextStyle(
-                                    fontSize: 15.0,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold)),
-                          ),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ChooseTestLanguage(
-                                  email: widget.email,
-                                  invitationKey: widget.invitationKey,
+      child: Directionality(
+        textDirection: TextDirection.rtl,
+        child: Scaffold(
+          body: Card(
+            elevation: 20.0,
+            child: Stack(children: <Widget>[
+              PageView(
+                controller: _welcomeScreenPageController,
+                scrollDirection: Axis.horizontal,
+                reverse: false,
+                children: listOfImages
+                    .map(
+                      (image) => Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height,
+                        decoration: BoxDecoration(
+                            //border: Border.all(width: 2.5, color: Colors.black),
+                            //borderRadius: BorderRadius.circular(24.0),
+                            image: DecorationImage(
+                                image: AssetImage(
+                                  image,
                                 ),
-                              ),
-                            );
-                          }),
-                    )),
-          ]),
+                                fit: BoxFit.cover)),
+                      ),
+                    )
+                    .toList(),
+                onPageChanged: (pageNum) {
+                  setState(() {
+                    currentpage = pageNum;
+                  });
+                },
+              ),
+              currentpage != listOfImages.length - 1
+                  ? Positioned(
+                      bottom: 20.0,
+                      left: 25.0,
+                      right: 25.0,
+                      child: PageIndicator(
+                        numOfIndicators: listOfImages.length,
+                        selectedPage: currentpage,
+                        welcomeScreenPageController:
+                            _welcomeScreenPageController,
+                      ))
+                  : Positioned(
+                      bottom: 20.0,
+                      left: 25.0,
+                      right: 25.0,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 60.0),
+                        child: RaisedButton(
+                            elevation: 10.0,
+                            //#E1EEF5
+                            //#3445FA
+                            //#0513AD
+                            //#FF0000
+                            //color: Colors.blue[500],
+                            color: Color(0xFF0513AD),
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 18.0),
+                              child: Text("ابدأ الاختبار الآن",
+                                  style: TextStyle(
+                                      fontSize: 15.0,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold)),
+                            ),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ChooseTestLanguage(
+                                    email: widget.email,
+                                    invitationKey: widget.invitationKey,
+                                  ),
+                                ),
+                              );
+                            }),
+                      )),
+            ]),
+          ),
         ),
       ),
     );
@@ -197,18 +207,23 @@ class _SystemPadding extends StatelessWidget {
 class PageIndicator extends StatelessWidget {
   final int selectedPage;
   final int numOfIndicators;
+  final PageController welcomeScreenPageController;
 
-  PageIndicator({this.numOfIndicators, this.selectedPage});
+  PageIndicator(
+      {this.numOfIndicators,
+      this.selectedPage,
+      this.welcomeScreenPageController});
 
   Widget _inactivePhoto() {
     return Container(
         child: Padding(
-      padding: EdgeInsets.only(left: 3.0, right: 3.0),
+      padding: EdgeInsets.only(left: 8.0, right: 8.0),
       child: Container(
         height: 10.0,
         width: 10.0,
         decoration: BoxDecoration(
-            color: Colors.grey, borderRadius: BorderRadius.circular(4.0)),
+            color: Colors.indigo[400],
+            borderRadius: BorderRadius.circular(4.0)),
       ),
     ));
   }
@@ -216,12 +231,12 @@ class PageIndicator extends StatelessWidget {
   Widget _activePhoto() {
     return Container(
         child: Padding(
-      padding: EdgeInsets.only(left: 5.0, right: 5.0),
+      padding: EdgeInsets.only(left: 12.0, right: 12.0),
       child: Container(
         height: 15.0,
         width: 15.0,
         decoration: BoxDecoration(
-          color: Colors.indigo[500],
+          color: Colors.indigo[800],
           borderRadius: BorderRadius.circular(8.0),
         ),
       ),
@@ -234,7 +249,13 @@ class PageIndicator extends StatelessWidget {
       if (i == selectedPage)
         indicators.add(_activePhoto());
       else
-        indicators.add(_inactivePhoto());
+        indicators.add(GestureDetector(
+            onTap: () {
+              welcomeScreenPageController.animateToPage(i,
+                  duration: const Duration(milliseconds: 500),
+                  curve: Curves.easeIn);
+            },
+            child: _inactivePhoto()));
     }
 
     return indicators;

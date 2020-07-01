@@ -58,6 +58,7 @@ flutter:
   assets:
     - assets/images/
     - assets/images/welcomeScreens/
+    - assets/images/logos/
   #  - images/a_dot_ham.jpeg
   #  - assets/images/logo-RAHMA.png
   #  - assets/images/hh.jpg

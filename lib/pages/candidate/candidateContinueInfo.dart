@@ -2,12 +2,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tesapp/pages/candidate/calculateResult.dart';
+import 'package:tesapp/pages/candidate/candidateCompleteInfo.dart';
 import 'package:tesapp/pages/candidate/candidateHome.dart';
 import 'package:tesapp/pages/candidate/testResult.dart';
 import 'package:tesapp/pages/candidate/welcomeScreen.dart';
 import 'package:tesapp/pages/invitation_test.dart';
 import 'package:tesapp/services/auth_service.dart';
 import 'package:tesapp/views/sign_up_view.dart';
+import 'francaisCandidateTest.dart';
 
 class CandidateContinueInfo extends StatelessWidget {
   @override
@@ -35,12 +38,12 @@ class _CandidateInfoState extends State<CandidateInfo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       key: _scaffoldKey,
       body: Directionality(
         textDirection: TextDirection.rtl,
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 25.0),
-          color: primaryColor,
           alignment: Alignment.center,
           child: Form(
             key: formKey,
@@ -52,12 +55,28 @@ class _CandidateInfoState extends State<CandidateInfo> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.05),
+                          height: MediaQuery.of(context).size.height * 0.001),
+                      Center(
+                        child: Container(
+                          width: MediaQuery.of(context).size.width * 0.75,
+                          height: MediaQuery.of(context).size.height * 0.25,
+                          decoration: BoxDecoration(
+                              //border: Border.all(width: 2.5, color: Colors.black),
+                              //borderRadius: BorderRadius.circular(24.0),
+                              image: DecorationImage(
+                                  image: AssetImage(
+                                    'assets/images/logos/sign_in.png',
+                                  ),
+                                  fit: BoxFit.cover)),
+                        ),
+                      ),
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.03),
                       Text(
                         "ادخل بريدك الالكتروني:",
                         style: TextStyle(
                           fontSize: MediaQuery.of(context).size.width * 0.06,
-                          color: Colors.white,
+                          color: Colors.black,
                         ),
                       ),
                       SizedBox(
@@ -70,11 +89,16 @@ class _CandidateInfoState extends State<CandidateInfo> {
                           filled: true,
                           fillColor: Colors.white,
                           focusColor: Colors.white,
-                          enabledBorder: OutlineInputBorder(
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(24.0),
                               borderSide:
-                                  BorderSide(color: Colors.white, width: 0.0)),
+                                  BorderSide(color: Colors.black, width: 1.0)),
+                          enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(24.0),
+                              borderSide:
+                                  BorderSide(color: Colors.black, width: 1.0)),
                           contentPadding: const EdgeInsets.only(
-                              right: 14.0, bottom: 10.0, top: 10.0),
+                              right: 14.0, bottom: 15.0, top: 15.0),
                         ),
                         onSaved: (value) {
                           _email = value;
@@ -86,7 +110,7 @@ class _CandidateInfoState extends State<CandidateInfo> {
                         "ادخل رقمك السري:",
                         style: TextStyle(
                           fontSize: MediaQuery.of(context).size.width * 0.06,
-                          color: Colors.white,
+                          color: Colors.black,
                         ),
                       ),
                       SizedBox(
@@ -104,11 +128,16 @@ class _CandidateInfoState extends State<CandidateInfo> {
                           filled: true,
                           fillColor: Colors.white,
                           focusColor: Colors.white,
-                          enabledBorder: OutlineInputBorder(
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(24.0),
                               borderSide:
-                                  BorderSide(color: Colors.white, width: 0.0)),
+                                  BorderSide(color: Colors.black, width: 1.0)),
+                          enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(24.0),
+                              borderSide:
+                                  BorderSide(color: Colors.black, width: 1.0)),
                           contentPadding: const EdgeInsets.only(
-                              right: 14.0, bottom: 10.0, top: 10.0),
+                              right: 14.0, bottom: 15.0, top: 15.0),
                         ),
                         onSaved: (value) {
                           _password = value;
@@ -116,14 +145,14 @@ class _CandidateInfoState extends State<CandidateInfo> {
                       ),
                     ],
                   ),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.025),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.075),
                   Container(
                     width: MediaQuery.of(context).size.width * 0.7,
                     child: RaisedButton(
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0)),
-                      color: Colors.white,
-                      textColor: primaryColor,
+                          borderRadius: BorderRadius.circular(12.0)),
+                      color: Color(0xFF3445FA),
+                      textColor: Colors.white,
                       child: Padding(
                         padding: const EdgeInsets.all(15.0),
                         child: Text(
@@ -140,9 +169,9 @@ class _CandidateInfoState extends State<CandidateInfo> {
                     width: MediaQuery.of(context).size.width * 0.7,
                     child: RaisedButton(
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0)),
-                      color: Colors.white,
-                      textColor: primaryColor,
+                          borderRadius: BorderRadius.circular(12.0)),
+                      color: Color(0xFF3445FA),
+                      textColor: Colors.white,
                       child: Padding(
                         padding: const EdgeInsets.all(15.0),
                         child: Text(
@@ -156,7 +185,8 @@ class _CandidateInfoState extends State<CandidateInfo> {
                           context,
                           MaterialPageRoute(
                             builder: (context) =>
-                                SignUpView(authFormType: AuthFormType.signUp),
+                                //SignUpView(authFormType: AuthFormType.signUp),
+                                CandidateCompleteInfo(),
                           ),
                         );
                       },
@@ -252,6 +282,38 @@ class _CandidateInfoState extends State<CandidateInfo> {
             // show msg with This test is not availabe yet
             showInSnackBar(
                 "هذا الاختبار لقد انهيته بالفعل من فضلك راجع مسؤولك");
+
+            // add comment from here
+            /*QuerySnapshot result = await Firestore.instance.collection("CandidatesAnswers").getDocuments();
+            
+            /*QuerySnapshot result = await Firestore.instance
+                .collection("CandidatesAnswers")
+                .where('email', isGreaterThanOrEqualTo: _email)
+                .getDocuments();*/
+
+            for (int i = 0; i < result.documents.length; i++) {
+              var a = result.documents[i];
+              CandidateTestAnswer candidateTestAnswer =
+                  CandidateTestAnswer.fromJson(a.data);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CalculateResult(
+                    candidateTestAnswer: candidateTestAnswer,
+                    invitationKey: invitationKey,
+                  ),
+                ),
+              );
+            }*/
+            // to here
+
+            //bouabssa.loubna@gmail.com
+            //BqX8cw==
+            //samirhassan452@gmail.com
+            //LFv59g==
+
+            /**/
+
             /*Navigator.push(
               context,
               MaterialPageRoute(
@@ -283,7 +345,8 @@ class _CandidateInfoState extends State<CandidateInfo> {
   }
 
   void showInSnackBar(String value) {
-    _scaffoldKey.currentState
-        .showSnackBar(new SnackBar(content: new Text(value)));
+    _scaffoldKey.currentState.showSnackBar(new SnackBar(
+        content: Directionality(
+            textDirection: TextDirection.rtl, child: new Text(value))));
   }
 }
