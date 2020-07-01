@@ -320,7 +320,7 @@ class _SignUpViewState extends State<SignUpView> {
     );
     textFields.add(SizedBox(height: 20));
 
-    if ([AuthFormType.signUp, AuthFormType.convert].contains(authFormType)) {
+    /*if ([AuthFormType.signUp, AuthFormType.convert].contains(authFormType)) {
       textFields.add(
         TextFormField(
           validator: NameValidator.validate,
@@ -340,8 +340,7 @@ class _SignUpViewState extends State<SignUpView> {
         ),
       );
       textFields.add(SizedBox(height: 30));
-    }
-
+    }*/
     return textFields;
   }
 

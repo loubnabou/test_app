@@ -37,171 +37,173 @@ class _CandidateInfoState extends State<CandidateInfo> {
   String warning;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      key: _scaffoldKey,
-      body: Directionality(
-        textDirection: TextDirection.rtl,
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 25.0),
-          alignment: Alignment.center,
-          child: Form(
-            key: formKey,
-            child: SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: Column(
-                children: <Widget>[
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.001),
-                      Center(
-                        child: Container(
-                          width: MediaQuery.of(context).size.width * 0.75,
-                          height: MediaQuery.of(context).size.height * 0.25,
-                          decoration: BoxDecoration(
-                              //border: Border.all(width: 2.5, color: Colors.black),
-                              //borderRadius: BorderRadius.circular(24.0),
-                              image: DecorationImage(
-                                  image: AssetImage(
-                                    'assets/images/logos/sign_in.png',
-                                  ),
-                                  fit: BoxFit.cover)),
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        key: _scaffoldKey,
+        body: Directionality(
+          textDirection: TextDirection.rtl,
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 20.0),
+            alignment: Alignment.center,
+            child: Form(
+              key: formKey,
+              child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: Column(
+                  children: <Widget>[
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Center(
+                          child: Container(
+                            width: MediaQuery.of(context).size.width * 0.75,
+                            height: MediaQuery.of(context).size.height * 0.25,
+                            decoration: BoxDecoration(
+                                //border: Border.all(width: 2.5, color: Colors.black),
+                                //borderRadius: BorderRadius.circular(24.0),
+                                image: DecorationImage(
+                                    image: AssetImage(
+                                      'assets/images/logos/sign_in.png',
+                                    ),
+                                    fit: BoxFit.cover)),
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.03),
-                      Text(
-                        "ادخل بريدك الالكتروني:",
-                        style: TextStyle(
-                          fontSize: MediaQuery.of(context).size.width * 0.06,
-                          color: Colors.black,
-                        ),
-                      ),
-                      SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.005),
-                      TextFormField(
-                        controller: candidateEmail,
-                        validator: EmailValidator.validate,
-                        style: TextStyle(fontSize: 22.0),
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Colors.white,
-                          focusColor: Colors.white,
-                          focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(24.0),
-                              borderSide:
-                                  BorderSide(color: Colors.black, width: 1.0)),
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(24.0),
-                              borderSide:
-                                  BorderSide(color: Colors.black, width: 1.0)),
-                          contentPadding: const EdgeInsets.only(
-                              right: 14.0, bottom: 15.0, top: 15.0),
-                        ),
-                        onSaved: (value) {
-                          _email = value;
-                        },
-                      ),
-                      SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.015),
-                      Text(
-                        "ادخل رقمك السري:",
-                        style: TextStyle(
-                          fontSize: MediaQuery.of(context).size.width * 0.06,
-                          color: Colors.black,
-                        ),
-                      ),
-                      SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.005),
-                      TextFormField(
-                        controller: candidatePassword,
-                        validator: (val) {
-                          if (val.isEmpty)
-                            return 'لا يمكن ان يكون فارغا';
-                          else
-                            return null;
-                        },
-                        style: TextStyle(fontSize: 22.0),
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Colors.white,
-                          focusColor: Colors.white,
-                          focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(24.0),
-                              borderSide:
-                                  BorderSide(color: Colors.black, width: 1.0)),
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(24.0),
-                              borderSide:
-                                  BorderSide(color: Colors.black, width: 1.0)),
-                          contentPadding: const EdgeInsets.only(
-                              right: 14.0, bottom: 15.0, top: 15.0),
-                        ),
-                        onSaved: (value) {
-                          _password = value;
-                        },
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.075),
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.7,
-                    child: RaisedButton(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12.0)),
-                      color: Color(0xFF3445FA),
-                      textColor: Colors.white,
-                      child: Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: Text(
-                          "تسجيل دخول",
+                        SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.03),
+                        Text(
+                          "ادخل بريدك الالكتروني:",
                           style: TextStyle(
-                              fontSize: 20.0, fontWeight: FontWeight.w300),
+                            fontSize: MediaQuery.of(context).size.width * 0.06,
+                            color: Colors.black,
+                          ),
                         ),
-                      ),
-                      onPressed: submit,
+                        SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.005),
+                        TextFormField(
+                          controller: candidateEmail,
+                          validator: EmailValidator.validate,
+                          style: TextStyle(fontSize: 22.0),
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
+                            focusColor: Colors.white,
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(24.0),
+                                borderSide: BorderSide(
+                                    color: Colors.black, width: 1.0)),
+                            enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(24.0),
+                                borderSide: BorderSide(
+                                    color: Colors.black, width: 1.0)),
+                            contentPadding: const EdgeInsets.only(
+                                right: 14.0, bottom: 15.0, top: 15.0),
+                          ),
+                          onSaved: (value) {
+                            _email = value;
+                          },
+                        ),
+                        SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.015),
+                        Text(
+                          "ادخل رقمك السري:",
+                          style: TextStyle(
+                            fontSize: MediaQuery.of(context).size.width * 0.06,
+                            color: Colors.black,
+                          ),
+                        ),
+                        SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.005),
+                        TextFormField(
+                          controller: candidatePassword,
+                          validator: (val) {
+                            if (val.isEmpty)
+                              return 'لا يمكن ان يكون فارغا';
+                            else
+                              return null;
+                          },
+                          style: TextStyle(fontSize: 22.0),
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
+                            focusColor: Colors.white,
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(24.0),
+                                borderSide: BorderSide(
+                                    color: Colors.black, width: 1.0)),
+                            enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(24.0),
+                                borderSide: BorderSide(
+                                    color: Colors.black, width: 1.0)),
+                            contentPadding: const EdgeInsets.only(
+                                right: 14.0, bottom: 15.0, top: 15.0),
+                          ),
+                          onSaved: (value) {
+                            _password = value;
+                          },
+                        ),
+                      ],
                     ),
-                  ),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.025),
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.7,
-                    child: RaisedButton(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12.0)),
-                      color: Color(0xFF3445FA),
-                      textColor: Colors.white,
-                      child: Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: Text(
-                          "إنشاء حساب جديد",
-                          style: TextStyle(
-                              fontSize: 20.0, fontWeight: FontWeight.w300),
+                    SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.045),
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.7,
+                      child: RaisedButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12.0)),
+                        color: Color(0xFF3445FA),
+                        textColor: Colors.white,
+                        child: Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Text(
+                            "تسجيل دخول",
+                            style: TextStyle(
+                                fontSize: 20.0, fontWeight: FontWeight.w300),
+                          ),
                         ),
+                        onPressed: submit,
+                      ),
+                    ),
+                    SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.015),
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.7,
+                      child: RaisedButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12.0)),
+                        color: Color(0xFF3445FA),
+                        textColor: Colors.white,
+                        child: Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Text(
+                            "إنشاء حساب جديد",
+                            style: TextStyle(
+                                fontSize: 20.0, fontWeight: FontWeight.w300),
+                          ),
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  SignUpView(authFormType: AuthFormType.signUp),
+                              //CandidateCompleteInfo(),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                    /*FlatButton(
+                      child: Text(
+                        "Aren't candidate?, be coach and click now",
+                        style: TextStyle(color: Colors.white),
                       ),
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                //SignUpView(authFormType: AuthFormType.signUp),
-                                CandidateCompleteInfo(),
-                          ),
-                        );
+                        Navigator.of(context).pushReplacementNamed('/signIn');
                       },
-                    ),
-                  ),
-                  /*FlatButton(
-                    child: Text(
-                      "Aren't candidate?, be coach and click now",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    onPressed: () {
-                      Navigator.of(context).pushReplacementNamed('/signIn');
-                    },
-                  ),*/
-                ],
+                    ),*/
+                  ],
+                ),
               ),
             ),
           ),
