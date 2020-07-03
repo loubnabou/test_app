@@ -11,8 +11,22 @@ import 'package:tesapp/views/sign_up_view.dart';
 import 'package:tesapp/views/first_view.dart';
 import 'package:tesapp/widgets/provider_widget.dart';
 import 'package:tesapp/services/auth_service.dart';
+//import 'package:simple_permissions/simple_permissions.dart';
 
-void main() {
+/*Permission permissionFromString(String value){
+  Permission permission;
+  for(Permission item in Permission.values){
+    if(item.toString() == value){
+      permission = item;
+      break;
+    }
+  }
+
+  return permission;
+}*/
+
+void main() async{
+  //await SimplePermissions.requestPermission(permissionFromString('Permission.WriteExternalStorage'));
   runApp(MyApp());
 }
 
@@ -101,7 +115,9 @@ class HomeController extends StatelessWidget {
                     },
                   );
                 } else {
-                  return CandidateContinueInfo();
+                  //return CandidateContinueInfo();
+                  //return FirstView();
+                  return SignUpView(authFormType: AuthFormType.signIn);
                 }
               }
           }

@@ -52,6 +52,7 @@ class _CandidateInfoState extends State<CandidateInfo> {
                 scrollDirection: Axis.vertical,
                 child: Column(
                   children: <Widget>[
+                    //SizedBox(height: MediaQuery.of(context).size.height*0.03),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
@@ -70,7 +71,7 @@ class _CandidateInfoState extends State<CandidateInfo> {
                           ),
                         ),
                         SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.03),
+                            height: MediaQuery.of(context).size.height * 0.02),
                         Text(
                           "ادخل بريدك الالكتروني:",
                           style: TextStyle(
@@ -104,7 +105,7 @@ class _CandidateInfoState extends State<CandidateInfo> {
                           },
                         ),
                         SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.015),
+                            height: MediaQuery.of(context).size.height * 0.010),
                         Text(
                           "ادخل رقمك السري:",
                           style: TextStyle(
@@ -145,7 +146,7 @@ class _CandidateInfoState extends State<CandidateInfo> {
                       ],
                     ),
                     SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.045),
+                        height: MediaQuery.of(context).size.height * 0.030),
                     Container(
                       width: MediaQuery.of(context).size.width * 0.7,
                       child: RaisedButton(
@@ -186,12 +187,29 @@ class _CandidateInfoState extends State<CandidateInfo> {
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                                  SignUpView(authFormType: AuthFormType.signUp),
-                              //CandidateCompleteInfo(),
+                                  //SignUpView(authFormType: AuthFormType.signUp),
+                                  CandidateCompleteInfo(),
                             ),
                           );
                         },
                       ),
+                    ),
+                    FlatButton(
+                      child: Text(
+                        'You are Coach? click Now',
+                        style: TextStyle(
+                            color: Color(0xFF3445FA),
+                            fontWeight: FontWeight.bold),
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                SignUpView(authFormType: AuthFormType.signIn),
+                          ),
+                        );
+                      },
                     ),
                     /*FlatButton(
                       child: Text(
@@ -240,7 +258,7 @@ class _CandidateInfoState extends State<CandidateInfo> {
 
     QuerySnapshot querySnapshot =
         await Firestore.instance.collection("Users").getDocuments();
-
+        
     for (int i = 0; i < querySnapshot.documents.length; i++) {
       var a = querySnapshot.documents[i];
       if ((a.data['user'])['userType'] == 'candidate') {
@@ -286,26 +304,31 @@ class _CandidateInfoState extends State<CandidateInfo> {
                 "هذا الاختبار لقد انهيته بالفعل من فضلك راجع مسؤولك");
 
             // add comment from here
-            /*QuerySnapshot result = await Firestore.instance.collection("CandidatesAnswers").getDocuments();
-            
+            /*QuerySnapshot results = await Firestore.instance
+                .collection("CandidatesAnswers")
+                .getDocuments();
+
             /*QuerySnapshot result = await Firestore.instance
                 .collection("CandidatesAnswers")
                 .where('email', isGreaterThanOrEqualTo: _email)
                 .getDocuments();*/
 
-            for (int i = 0; i < result.documents.length; i++) {
-              var a = result.documents[i];
+            for (int i = 0; i < results.documents.length; i++) {
+              var a = results.documents[i];
               CandidateTestAnswer candidateTestAnswer =
                   CandidateTestAnswer.fromJson(a.data);
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => CalculateResult(
-                    candidateTestAnswer: candidateTestAnswer,
-                    invitationKey: invitationKey,
+              if (_email == candidateTestAnswer.email) {
+                //break;
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CalculateResult(
+                      candidateTestAnswer: candidateTestAnswer,
+                      invitationKey: invitationKey,
+                    ),
                   ),
-                ),
-              );
+                );
+              }
             }*/
             // to here
 

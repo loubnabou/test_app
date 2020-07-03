@@ -50,80 +50,83 @@ class _WelcomeCandidateScreenState extends State<WelcomeCandidateScreen> {
       child: Directionality(
         textDirection: TextDirection.rtl,
         child: Scaffold(
-          body: Stack(children: <Widget>[
-            PageView(
-              controller: _welcomeScreenPageController,
-              scrollDirection: Axis.horizontal,
-              reverse: false,
-              children: listOfImages
-                  .map(
-                    (image) => Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height,
-                      decoration: BoxDecoration(
-                          //border: Border.all(width: 2.5, color: Colors.black),
-                          //borderRadius: BorderRadius.circular(24.0),
-                          image: DecorationImage(
-                              image: AssetImage(
-                                image,
-                              ),
-                              fit: BoxFit.cover)),
-                    ),
-                  )
-                  .toList(),
-              onPageChanged: (pageNum) {
-                setState(() {
-                  currentpage = pageNum;
-                });
-              },
-            ),
-            currentpage != listOfImages.length - 1
-                ? Positioned(
-                    bottom: 20.0,
-                    left: 25.0,
-                    right: 25.0,
-                    child: PageIndicator(
-                      numOfIndicators: listOfImages.length,
-                      selectedPage: currentpage,
-                      welcomeScreenPageController:
-                          _welcomeScreenPageController,
-                    ))
-                : Positioned(
-                    bottom: 10.0,
-                    left: 25.0,
-                    right: 25.0,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 80.0),
-                      child: RaisedButton(
-                          elevation: 10.0,
-                          //#E1EEF5
-                          //#3445FA
-                          //#0513AD
-                          //#FF0000
-                          //color: Colors.blue[500],
-                          color: Color(0xFF0513AD),
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.symmetric(vertical: 18.0),
-                            child: Text("ابدأ الاختبار الآن",
-                                style: TextStyle(
-                                    fontSize: 15.0,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold)),
-                          ),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ChooseTestLanguage(
-                                  email: widget.email,
-                                  invitationKey: widget.invitationKey,
+          body: Card(
+            elevation: 20.0,
+            child: Stack(children: <Widget>[
+              PageView(
+                controller: _welcomeScreenPageController,
+                scrollDirection: Axis.horizontal,
+                reverse: false,
+                children: listOfImages
+                    .map(
+                      (image) => Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height,
+                        decoration: BoxDecoration(
+                            //border: Border.all(width: 2.5, color: Colors.black),
+                            //borderRadius: BorderRadius.circular(24.0),
+                            image: DecorationImage(
+                                image: AssetImage(
+                                  image,
                                 ),
-                              ),
-                            );
-                          }),
-                    )),
-          ]),
+                                fit: BoxFit.cover)),
+                      ),
+                    )
+                    .toList(),
+                onPageChanged: (pageNum) {
+                  setState(() {
+                    currentpage = pageNum;
+                  });
+                },
+              ),
+              currentpage != listOfImages.length - 1
+                  ? Positioned(
+                      bottom: 20.0,
+                      left: 25.0,
+                      right: 25.0,
+                      child: PageIndicator(
+                        numOfIndicators: listOfImages.length,
+                        selectedPage: currentpage,
+                        welcomeScreenPageController:
+                            _welcomeScreenPageController,
+                      ))
+                  : Positioned(
+                      bottom: 10.0,
+                      left: 25.0,
+                      right: 25.0,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 80.0),
+                        child: RaisedButton(
+                            elevation: 10.0,
+                            //#E1EEF5
+                            //#3445FA
+                            //#0513AD
+                            //#FF0000
+                            //color: Colors.blue[500],
+                            color: Color(0xFF0513AD),
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 18.0),
+                              child: Text("ابدأ الاختبار الآن",
+                                  style: TextStyle(
+                                      fontSize: 15.0,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold)),
+                            ),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ChooseTestLanguage(
+                                    email: widget.email,
+                                    invitationKey: widget.invitationKey,
+                                  ),
+                                ),
+                              );
+                            }),
+                      )),
+            ]),
+          ),
         ),
       ),
     );

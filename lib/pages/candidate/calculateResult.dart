@@ -178,51 +178,65 @@ class _CalculateResultState extends State<CalculateResult> {
 
     Widget msgWidget;
     if (indexAR == indexFR) {
-      // to check all another patterns are less than 30
-      bool checkARScore = false;
-      bool checkFRScore = false;
-      for (int i = 0; i < ansScoreAR.length; i++) {
-        if (i == indexAR)
-          continue;
-        else {
-          int arScore = ansScoreAR[ansScoreAR.keys.elementAt(i)];
-          double percentageARScore = double.parse(
-              ((arScore.toDouble() / percentageAR) * 100).toStringAsFixed(1));
-          if (percentageARScore > 30) {
-            // then there is pattern is larger than 30 in AR
-            checkARScore = true;
-            break;
+      int arMaxScore = ansScoreAR[ansScoreAR.keys.elementAt(indexAR)];
+      int frMaxScore = ansScoreFR[ansScoreFR.keys.elementAt(indexFR)];
+
+      double percentageARMAXScore = double.parse(
+          ((arMaxScore.toDouble() / percentageAR) * 100).toStringAsFixed(1));
+      double percentageFRMAXScore = double.parse(
+          ((frMaxScore.toDouble() / percentageFR) * 100).toStringAsFixed(1));
+
+      if (percentageARMAXScore > 38.855 && percentageFRMAXScore > 38.855 /*1==1*/) {
+        //print("greater than");
+        // to check all another patterns are less than 30
+        bool checkARScore = false;
+        bool checkFRScore = false;
+        for (int i = 0; i < ansScoreAR.length; i++) {
+          if (i == indexAR)
+            continue;
+          else {
+            int arScore = ansScoreAR[ansScoreAR.keys.elementAt(i)];
+            double percentageARScore = double.parse(
+                ((arScore.toDouble() / percentageAR) * 100).toStringAsFixed(1));
+            if (percentageARScore > 16.66) {
+              // then there is pattern is larger than 30 in AR
+              checkARScore = true;
+              break;
+            }
           }
         }
-      }
 
-      for (int i = 0; i < ansScoreFR.length; i++) {
-        if (i == indexFR)
-          continue;
-        else {
-          int frScore = ansScoreFR[ansScoreFR.keys.elementAt(i)];
-          double percentageFRScore = double.parse(
-              ((frScore.toDouble() / percentageFR) * 100).toStringAsFixed(1));
-          if (percentageFRScore > 30) {
-            // then there is pattern is larger than 30 in FR
-            checkFRScore = true;
-            break;
+        for (int i = 0; i < ansScoreFR.length; i++) {
+          if (i == indexFR)
+            continue;
+          else {
+            int frScore = ansScoreFR[ansScoreFR.keys.elementAt(i)];
+            double percentageFRScore = double.parse(
+                ((frScore.toDouble() / percentageFR) * 100).toStringAsFixed(1));
+            if (percentageFRScore > 16.66) {
+              // then there is pattern is larger than 30 in FR
+              checkFRScore = true;
+              break;
+            }
           }
         }
-      }
 
-      if (checkARScore == false && checkFRScore == false) {
-        if (firstTime == true) {
-          // save results in database
-          dataFirebase.sendData(
+        if (checkARScore == false && checkFRScore == false/* 1==1*/) {
+          if (firstTime == true) {
+            // save results in database
+            /*dataFirebase.sendData(
               'CandidatesAnswers', widget.candidateTestAnswer.toJson());
 
           // update CandidatesKey
-          updateCandidatesKey();
-        }
+          updateCandidatesKey();*/
 
-        msgWidget = matchMsg(percentageAR, percentageFR);
+          }
+          msgWidget = matchMsg(percentageAR, percentageFR);
+        } else {
+          msgWidget = notMatchMsg();
+        }
       } else {
+        //print("less");
         msgWidget = notMatchMsg();
       }
     } else {
@@ -268,7 +282,15 @@ class _CalculateResultState extends State<CalculateResult> {
     final raw = listOfItems;
     final showBarGroups = raw;
 
-    return buildGraph(showBarGroups);
+    CandidateResultGraph candidateResultGraph = new CandidateResultGraph(
+        ansScoreAR: ansScoreAR,
+        ansScoreFR: ansScoreFR,
+        percentageAR: percentageAR,
+        percentageFR: percentageFR,
+        maxValueARIndex: maxValueARIndex,
+        maxValueFRIndex: maxValueFRIndex);
+
+    return buildGraph(showBarGroups, candidateResultGraph);
   }
 
   Widget notMatchMsg() {
@@ -322,7 +344,8 @@ class _CalculateResultState extends State<CalculateResult> {
     );
   }
 
-  Widget buildGraph(List<BarChartGroupData> showBarGroups) {
+  Widget buildGraph(List<BarChartGroupData> showBarGroups,
+      CandidateResultGraph candidateResultGraph) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
       child: ListView(
@@ -387,7 +410,8 @@ class _CalculateResultState extends State<CalculateResult> {
                           "النتائج بالعربية",
                           style: TextStyle(
                               color: Colors.white,
-                              fontWeight: FontWeight.bold,
+                              fontWeight: FontWeight.w700,
+                              fontFamily: 'Amiri',
                               fontSize:
                                   MediaQuery.of(context).size.width * 0.035),
                         ),
@@ -453,7 +477,7 @@ class _CalculateResultState extends State<CalculateResult> {
                     RichText(
                         textDirection: TextDirection.rtl,
                         text: TextSpan(
-                            text: "نسبة اقل من 30%  ",
+                            text: "نسبة اقل من 16,66%  ",
                             style: TextStyle(
                                 color: Color(0xFF3445FA),
                                 fontSize: 13.5,
@@ -471,7 +495,7 @@ class _CalculateResultState extends State<CalculateResult> {
                     RichText(
                         textDirection: TextDirection.rtl,
                         text: TextSpan(
-                            text: "نسبة تتراوح بين 30% و 70%  ",
+                            text: "نسبة تتراوح بين 16,66% و 38,855%  ",
                             style: TextStyle(
                                 color: Color(0xFF3445FA),
                                 fontSize: 13.5,
@@ -489,7 +513,7 @@ class _CalculateResultState extends State<CalculateResult> {
                     RichText(
                         textDirection: TextDirection.rtl,
                         text: TextSpan(
-                            text: "نسبة أكبر من 70%  ",
+                            text: "نسبة أكبر من 38,855%  ",
                             style: TextStyle(
                                 color: Color(0xFF3445FA),
                                 fontSize: 13.5,
@@ -547,6 +571,8 @@ class _CalculateResultState extends State<CalculateResult> {
                   MaterialPageRoute(
                     builder: (context) => WatchCandidateResult(
                       pattern: maxValueARIndex,
+                      invitationKey: widget.invitationKey,
+                      candidateResultGraph: candidateResultGraph,
                     ),
                   ),
                 );
@@ -726,4 +752,21 @@ class _CalculateResultState extends State<CalculateResult> {
         content: Directionality(
             textDirection: TextDirection.rtl, child: new Text(value))));
   }
+}
+
+class CandidateResultGraph {
+  final Map<String, int> ansScoreAR;
+  final Map<String, int> ansScoreFR;
+  final String maxValueARIndex;
+  final String maxValueFRIndex;
+  final double percentageAR;
+  final double percentageFR;
+
+  CandidateResultGraph(
+      {this.ansScoreAR,
+      this.ansScoreFR,
+      this.maxValueARIndex,
+      this.maxValueFRIndex,
+      this.percentageAR,
+      this.percentageFR});
 }

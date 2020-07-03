@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tesapp/services/auth_service.dart';
+import 'package:tesapp/views/sign_up_view.dart';
 
 class CandidateCompleteInfo extends StatefulWidget {
   @override
@@ -39,7 +40,7 @@ class _CandidateCompleteInfoState extends State<CandidateCompleteInfo> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.07),
+                          height: MediaQuery.of(context).size.height * 0.06),
                       Center(
                         child: Container(
                           width: MediaQuery.of(context).size.width * 0.62,
@@ -53,7 +54,7 @@ class _CandidateCompleteInfoState extends State<CandidateCompleteInfo> {
                         ),
                       ),
                       SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.03),
+                          height: MediaQuery.of(context).size.height * 0.015),
                       TextFormField(
                         controller: candidateName,
                         style: TextStyle(fontSize: 22.0),
@@ -204,7 +205,7 @@ class _CandidateCompleteInfoState extends State<CandidateCompleteInfo> {
                       ),
                     ],
                   ),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.035),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.025),
                   Container(
                     width: MediaQuery.of(context).size.width * 0.7,
                     child: RaisedButton(
@@ -222,6 +223,23 @@ class _CandidateCompleteInfoState extends State<CandidateCompleteInfo> {
                       ),
                       onPressed: () {},
                     ),
+                  ),
+                  FlatButton(
+                    child: Text(
+                      'You are Coach? click Now',
+                      style: TextStyle(
+                          color: Color(0xFF3445FA),
+                          fontWeight: FontWeight.bold),
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              SignUpView(authFormType: AuthFormType.signIn),
+                        ),
+                      );
+                    },
                   ),
                 ],
               ),

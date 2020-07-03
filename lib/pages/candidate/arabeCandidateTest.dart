@@ -224,7 +224,7 @@ class _ArabeTestCarouselState extends State<ArabeTestCarousel> {
     final height = MediaQuery.of(context).size.height;
     return Padding(
       padding: EdgeInsets.only(
-          top: height > 600 ? height * 0.072 : height * 0.055,
+          top: height > 600 ? height * 0.072 : height * 0.045,
           left: width > 350 ? width * 0.05 : width * 0.03,
           right: width > 350 ? width * 0.05 : width * 0.03),
       child: Card(
@@ -234,7 +234,7 @@ class _ArabeTestCarouselState extends State<ArabeTestCarousel> {
         ),
         child: Container(
           width: width,
-          height: height > 600 ? height * 0.70 : height * 0.80,
+          height: height > 600 ? height * 0.70 : height * 0.85,
           child: PageView.builder(
             controller: _testArabeQuestionsPageController,
             scrollDirection: Axis.horizontal,
@@ -270,7 +270,7 @@ class _ArabeTestCarouselState extends State<ArabeTestCarousel> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10.0),
+                      padding: const EdgeInsets.symmetric(vertical: 5.0),
                       child: Text(
                         question.question,
                         textAlign: TextAlign.center,
@@ -345,7 +345,7 @@ class _ArabeTestCarouselState extends State<ArabeTestCarousel> {
                           }),
                     ),
                     SizedBox(
-                      height: height > 600 ? height * 0.04 : height * 0.02,
+                      height: height > 600 ? height * 0.004 : height * 0.002,
                     ),
                     Expanded(
                       child: Container(

@@ -172,34 +172,36 @@ class _SignUpViewState extends State<SignUpView> {
             ],
           ));
     } else {
-      return Scaffold(
-        key: _scaffoldKey,
-        resizeToAvoidBottomPadding: false,
-        body: Directionality(
-          textDirection: TextDirection.ltr,
-          child: Container(
-            color: primaryColor,
-            height: _height,
-            width: _width,
-            child: SafeArea(
-              child: Column(
-                children: <Widget>[
-                  SizedBox(height: _height * 0.025),
-                  showAlert(),
-                  SizedBox(height: _height * 0.025),
-                  buildHeaderText(),
-                  //buildLogo(),
-                  SizedBox(height: _height * 0.035),
-                  Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Form(
-                      key: formKey,
-                      child: Column(
-                        children: buildInputs() + buildButtons(),
+      return SafeArea(
+        child: Scaffold(
+          key: _scaffoldKey,
+          resizeToAvoidBottomPadding: false,
+          body: Directionality(
+            textDirection: TextDirection.ltr,
+            child: Container(
+              color: primaryColor,
+              height: _height,
+              width: _width,
+              child: SafeArea(
+                child: Column(
+                  children: <Widget>[
+                    SizedBox(height: _height * 0.025),
+                    showAlert(),
+                    SizedBox(height: _height * 0.025),
+                    buildHeaderText(),
+                    //buildLogo(),
+                    SizedBox(height: _height * 0.035),
+                    Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Form(
+                        key: formKey,
+                        child: Column(
+                          children: buildInputs() + buildButtons(),
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

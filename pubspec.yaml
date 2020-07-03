@@ -23,6 +23,7 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
+  #simple_permissions: ^0.1.9
   firebase_auth: ^0.16.0
   csv: ^4.0.3
   firebase_core: ^0.4.4+3
@@ -38,6 +39,8 @@ dependencies:
   shared_preferences: ^0.5.7+3
   mailer2: ^1.2.5
   fl_chart: ^0.10.0
+  pdf: ^1.9.0
+  flutter_full_pdf_viewer: ^1.0.6
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -74,11 +77,17 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
+  fonts:
+    - family: Amiri
+      fonts:
+        - asset: assets/fonts/amiri/Amiri-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/amiri/Amiri-BoldItalic.ttf
+          weight: 700
+        - asset: assets/fonts/amiri/Amiri-Italic.ttf
+          weight: 400
+        - asset: assets/fonts/amiri/Amiri-Regular.ttf
+          weight: 400
   #         style: italic
   #   - family: Trajan Pro
   #     fonts:
