@@ -11,7 +11,19 @@ import 'package:tesapp/views/sign_up_view.dart';
 import 'package:tesapp/views/first_view.dart';
 import 'package:tesapp/widgets/provider_widget.dart';
 import 'package:tesapp/services/auth_service.dart';
-//import 'package:simple_permissions/simple_permissions.dart';
+import 'package:permission_handler/permission_handler.dart';
+
+/*Permission permissionFromString(String value){
+  Permission permission;
+  for(Permission item in Permission.values){
+    if(item.toString() == value){
+      permission = item;
+      break;
+    }
+  }
+
+  return permission;
+}*/
 
 /*Permission permissionFromString(String value){
   Permission permission;
@@ -26,7 +38,11 @@ import 'package:tesapp/services/auth_service.dart';
 }*/
 
 void main() async{
-  //await SimplePermissions.requestPermission(permissionFromString('Permission.WriteExternalStorage'));
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  await Permission.storage.request();
+  //await permissionFromString('Permission.storage').request();
+  //SimplePermissions.requestPermission(permissionFromString('Permission.WriteExternalStorage'));
   runApp(MyApp());
 }
 

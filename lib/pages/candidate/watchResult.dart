@@ -10,6 +10,7 @@ import 'calculateResult.dart';
 import 'package:flutter/services.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
+import 'package:permission_handler/permission_handler.dart';
 
 /*Permission permissionFromString(String value){
   Permission permission;
@@ -1333,14 +1334,14 @@ class _WatchCandidateResultState extends State<WatchCandidateResult> {
     //print("writedSuccess");
 
     //await saveResult();
-    Directory documentDirectory = await getApplicationDocumentsDirectory();
-    String documentPath = documentDirectory.path;
+    //Directory documentDirectory = await getApplicationDocumentsDirectory();
+    //String documentPath = documentDirectory.path;
 
     String timestamp = new DateTime.now().millisecondsSinceEpoch.toString();
-    timestamp = documentPath + '/PatternResult' + timestamp;
-    //String filePath = '/storage/emulated/0/Documents/${timestamp}';
+    timestamp = '/PatternResult' + timestamp;
+    String filePath = '/storage/emulated/0/Documents/${timestamp}';
 
-    return timestamp;
+    return filePath;
   }
 
   void saveResult() async {
@@ -1358,6 +1359,12 @@ class _WatchCandidateResultState extends State<WatchCandidateResult> {
       showInSnackBar('غير قادر على الوصول للملفات لحفظ الملف المطلوب!');
       return;
     }*/
+
+    bool hasStorage = await Permission.storage.isGranted;
+    if(hasStorage == false){
+      showInSnackBar('غير قادر على الوصول للملفات لحفظ الملف المطلوب!');
+      return;
+    }
 
     writeOnPDF().then((String filePath){
       if(filePath != null){
