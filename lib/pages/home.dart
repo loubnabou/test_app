@@ -42,7 +42,7 @@ class MyWidget extends StatelessWidget {
         child: new Scaffold(
           appBar: AppBar(
             title: Text('Home'),
-            backgroundColor: Colors.teal[800],
+            backgroundColor: Color(0xFF0513AD),
           ),
           body: FutureBuilder(
               future: Firestore.instance.collection("Coachs").getDocuments(),
@@ -76,7 +76,7 @@ class MyWidget extends StatelessWidget {
                                             : 3),
                             itemBuilder: (context, index) {
                               return Card(
-                                color: Colors.teal[700],
+                                color: Color(0xFF3445FA),
                                 elevation: 25.0,
                                 child: Padding(
                                   padding: EdgeInsets.all(8.0),
@@ -143,8 +143,8 @@ class MyWidget extends StatelessWidget {
                 DrawerHeader(
                   decoration: BoxDecoration(
                       gradient: LinearGradient(colors: <Color>[
-                    Color(0xFF5500b3),
-                    Color(0xFF8c3ce3),
+                    Color(0xFF0513AD),
+                    Color(0xFF3445FA),
                   ])),
                   child: Container(
                       child: Column(
@@ -239,7 +239,7 @@ class Menu extends StatelessWidget {
                   children: <Widget>[
                     Icon(
                       icon,
-                      color: Color(0xFF7a34c5),
+                      color: Color(0xFF0513AD),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),

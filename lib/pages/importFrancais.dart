@@ -15,7 +15,7 @@ class CourseApp extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("Les Tests"),
-        backgroundColor: Colors.deepPurpleAccent,
+        backgroundColor: Color(0xFF0513AD),
         actions: <Widget>[
           IconButton(
               icon: Icon(Icons.home),
@@ -56,7 +56,7 @@ class CourseApp extends StatelessWidget {
                         subtitle: Text(test.subject),
                         leading: Icon(
                           Icons.check_circle,
-                          color: Color(0xFF7a34c5),
+                          color: Color(0xFF3445FA),
                         ),
                         onTap: () {
                           Navigator.push(

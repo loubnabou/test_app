@@ -56,7 +56,7 @@ class _InsertCandidatesState extends State<InsertCandidates> {
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
-        backgroundColor: Colors.deepPurpleAccent,
+        backgroundColor: Color(0xFF0513AD),
         title: FittedBox(
             fit: BoxFit.fitWidth,
             child: Text('entrer le nombre de candidates emails')),
@@ -64,8 +64,13 @@ class _InsertCandidatesState extends State<InsertCandidates> {
             child: Padding(
               padding: EdgeInsets.all(25.0),
               child: TextField(
-                cursorColor: Colors.pinkAccent,
-                decoration: InputDecoration(icon: Icon(Icons.border_color)),
+                cursorColor: Colors.white,
+                style: TextStyle(color: Colors.white),
+                decoration: InputDecoration(
+                    icon: Icon(
+                  Icons.border_color,
+                  color: Colors.white,
+                )),
                 controller: _controller,
                 onSubmitted: (value) {
                   setState(() {
@@ -106,12 +111,12 @@ class _InsertCandidatesState extends State<InsertCandidates> {
                     }
                   },
                   controller: _candidatesController[index],
-                  cursorColor: Colors.pinkAccent,
+                  cursorColor: Color(0xFF3445FA),
                   decoration: InputDecoration(
                     hintText: "Enter Email #" + (index + 1).toString(),
                     icon: Icon(
                       Icons.mode_edit,
-                      color: Color(0xFF7a34c5),
+                      color: Color(0xFF0513AD),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(
@@ -140,7 +145,6 @@ class _InsertCandidatesState extends State<InsertCandidates> {
                     'Users', _candidatesController[i].text);
 
                 if (foundedEmail == 'un-founded') {
-                  
                 } else {
                   isFounded++;
                   showInSnackBar('this email $foundedEmail is exists');
@@ -160,11 +164,10 @@ class _InsertCandidatesState extends State<InsertCandidates> {
 
                 Navigator.pop(context);
               }
-              
             }
           },
           child: new Icon(Icons.check),
-          backgroundColor: Colors.pinkAccent,
+          backgroundColor: Color(0xFF0513AD),
         ),
       ),
     );
@@ -200,11 +203,12 @@ class CandidateEmailFormat {
   final String adminEmail;
   final String email;
   final String userType;
-  CandidateEmailFormat({this.adminEmail,this.email, this.userType = 'candidate'});
+  CandidateEmailFormat(
+      {this.adminEmail, this.email, this.userType = 'candidate'});
 
   Map<String, Object> toJson() {
     return {
-      "addedBy" : adminEmail,
+      "addedBy": adminEmail,
       "user": {
         "email": email != null ? email : 'unknwon',
         "userType": userType,

@@ -33,14 +33,19 @@ class CustomTextFieldState extends State<CustomTextField> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.deepPurpleAccent,
+        backgroundColor: Color(0xFF0513AD),
         title: Text('entrer le nombre de questions '),
         bottom: PreferredSize(
             child: Padding(
               padding: EdgeInsets.all(25.0),
               child: TextField(
-                cursorColor: Colors.pinkAccent,
-                decoration: InputDecoration(icon: Icon(Icons.border_color)),
+                cursorColor: Colors.white,
+                style: TextStyle(color: Colors.white),
+                decoration: InputDecoration(
+                    icon: Icon(
+                  Icons.border_color,
+                  color: Colors.white,
+                )),
                 controller: _controller,
                 onSubmitted: (value) {
                   setState(() {
@@ -60,11 +65,11 @@ class CustomTextFieldState extends State<CustomTextField> {
               padding: EdgeInsets.all(25.0),
               child: TextField(
                 controller: _questionsController[index],
-                cursorColor: Colors.pinkAccent,
+                cursorColor: Color(0xFF3445FA),
                 decoration: InputDecoration(
                   icon: Icon(
                     Icons.mode_edit,
-                    color: Color(0xFF7a34c5),
+                    color: Color(0xFF0513AD),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(
@@ -154,7 +159,7 @@ class CustomTextFieldState extends State<CustomTextField> {
             }
           },
           child: new Icon(Icons.check),
-          backgroundColor: Colors.pinkAccent,
+          backgroundColor: Color(0xFF0513AD),
         ),
       ),
     );

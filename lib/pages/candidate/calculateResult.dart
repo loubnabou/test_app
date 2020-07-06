@@ -224,11 +224,11 @@ class _CalculateResultState extends State<CalculateResult> {
         if (checkARScore == false && checkFRScore == false/* 1==1*/) {
           if (firstTime == true) {
             // save results in database
-            /*dataFirebase.sendData(
+            dataFirebase.sendData(
               'CandidatesAnswers', widget.candidateTestAnswer.toJson());
 
           // update CandidatesKey
-          updateCandidatesKey();*/
+          updateCandidatesKey();
 
           }
           msgWidget = matchMsg(percentageAR, percentageFR);

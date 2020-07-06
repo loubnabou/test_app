@@ -55,6 +55,7 @@ class _TestInvitationState extends State<TestInvitation> {
       key: _scaffoldKey,
       appBar: AppBar(
         title: Text("Choose Test"),
+        backgroundColor: Color(0xFF0513AD),
       ),
       body: _testLists.length != 0
           ? ListView.builder(
@@ -89,6 +90,7 @@ class _TestInvitationState extends State<TestInvitation> {
       floatingActionButton: Opacity(
         opacity: selectedTest != null ? 1.0 : 0.0,
         child: FloatingActionButton(
+            backgroundColor: Color(0xFF0513AD),
             child: Icon(Icons.email),
             onPressed: () {
               for (int i = 0; i < widget.emailsList.length; i++) {
@@ -133,7 +135,7 @@ class _TestInvitationState extends State<TestInvitation> {
   void showInSnackBar(String value, int size) {
     _scaffoldKey.currentState.showSnackBar(new SnackBar(
       content: new Text(value),
-      duration: Duration(milliseconds: size * 800),
+      duration: Duration(milliseconds: size * 1200),
     ));
   }
 }

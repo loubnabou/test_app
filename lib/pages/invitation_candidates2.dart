@@ -57,6 +57,7 @@ class _Candidate2InvitationState extends State<Candidate2Invitation> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Select Candidates"),
+        backgroundColor: Color(0xFF0513AD),
       ),
       body: _emails.length != 0
           ? ListView.builder(
@@ -110,6 +111,7 @@ class _Candidate2InvitationState extends State<Candidate2Invitation> {
       floatingActionButton: Opacity(
         opacity: _checkIfChooseEmail() ? 1.0 : 0.0,
         child: FloatingActionButton(
+            backgroundColor: Color(0xFF0513AD),
             child: Icon(Icons.arrow_forward),
             onPressed: () {
               List<String> _emailsList = new List<String>();
@@ -121,7 +123,9 @@ class _Candidate2InvitationState extends State<Candidate2Invitation> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => TestInvitation(emailsList: _emailsList,),
+                  builder: (context) => TestInvitation(
+                    emailsList: _emailsList,
+                  ),
                 ),
               );
             }),

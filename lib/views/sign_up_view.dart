@@ -179,7 +179,7 @@ class _SignUpViewState extends State<SignUpView> {
           body: Directionality(
             textDirection: TextDirection.ltr,
             child: Container(
-              color: primaryColor,
+              color: Color(0xFF0513AD),
               height: _height,
               width: _width,
               child: SafeArea(

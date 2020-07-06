@@ -20,7 +20,7 @@ class Importer extends StatelessWidget {
             leading: IconButton(
                 icon: Icon(Icons.arrow_back),
                 onPressed: () => Navigator.pop(context)),
-            backgroundColor: Color(0xFF5500b3),
+            backgroundColor: Color(0xFF0513AD),
             title: new Text('Importer un test '),
           ),
           body: new Center(
@@ -32,9 +32,9 @@ class Importer extends StatelessWidget {
                 ClickyButton(
                   child: Text(
                     'importer un test en Francais!',
-                    style: TextStyle(color: Colors.white, fontSize: 22),
+                    style: TextStyle(color: Colors.white, fontSize: 22,),
                   ),
-                  color: Colors.green,
+                  color: Color(0xFF0513AD),
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -55,7 +55,7 @@ class Importer extends StatelessWidget {
                     'تحميل اختبار بالعربية',
                     style: TextStyle(color: Colors.white, fontSize: 22),
                   ),
-                  color: Colors.green,
+                  color: Color(0xFF0513AD),
                   onPressed: () {
                     Navigator.push(
                       context,

@@ -38,7 +38,7 @@ class InsertFrancaisState extends State<InsertFrancais> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Importer Test"),
-        backgroundColor: Colors.deepPurpleAccent,
+        backgroundColor: Color(0xFF0513AD),
       ),
       body: ListView(
         children: <Widget>[
@@ -83,7 +83,7 @@ class InsertFrancaisState extends State<InsertFrancais> {
                       "commencer l'insertion des questions ",
                       style: TextStyle(color: Colors.white),
                     ),
-                    color: Colors.deepPurpleAccent,
+                    color: Color(0xFF0513AD),
                     onPressed: () async {
                       /*await(sendData()
                         );
@@ -136,7 +136,7 @@ class InsertFrancaisState extends State<InsertFrancais> {
                       "table des Tests  ",
                       style: TextStyle(color: Colors.white),
                     ),
-                    color: Colors.deepPurpleAccent,
+                    color: Color(0xFF0513AD),
                     onPressed: () {
                       Navigator.push(
                         context,

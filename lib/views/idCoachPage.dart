@@ -27,7 +27,7 @@ class _IDOfCoachState extends State<IDOfCoach> {
       key: _scaffoldKey,
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 25.0),
-        color: primaryColor,
+        color: Color(0xFF0513AD),
         alignment: Alignment.center,
         child: Column(
           children: <Widget>[

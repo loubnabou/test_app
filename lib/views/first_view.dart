@@ -16,7 +16,7 @@ class FirstView extends StatelessWidget {
       body: Container(
         width: _width,
         height: _height,
-        color: primaryColor,
+        color: Color(0xFF0513AD),
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(16.0),

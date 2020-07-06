@@ -62,7 +62,7 @@ class InsertArabeState extends State<InsertArabe> {
           "تحميل الاختبار",
           textDirection: TextDirection.rtl,
         ),
-        backgroundColor: Colors.deepPurpleAccent,
+        backgroundColor: Color(0xFF0513AD),
       ),
       body: ListView(
         children: <Widget>[
@@ -107,7 +107,7 @@ class InsertArabeState extends State<InsertArabe> {
                       "الذهاب لاضافة اسئلة الاختبار ",
                       style: TextStyle(color: Colors.white),
                     ),
-                    color: Colors.deepPurpleAccent,
+                    color: Color(0xFF0513AD),
                     onPressed: () async {
                       /*await(sendData()
                         );
@@ -160,7 +160,7 @@ class InsertArabeState extends State<InsertArabe> {
                       "مشاهدة جميع الاختبارات الخاصة بك  ",
                       style: TextStyle(color: Colors.white),
                     ),
-                    color: Colors.deepPurpleAccent,
+                    color: Color(0xFF0513AD),
                     onPressed: () {
                       Navigator.push(
                         context,
