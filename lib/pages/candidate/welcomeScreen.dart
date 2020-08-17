@@ -114,7 +114,7 @@ class _WelcomeCandidateScreenState extends State<WelcomeCandidateScreen> {
                                       fontWeight: FontWeight.bold)),
                             ),
                             onPressed: () {
-                              Navigator.push(
+                              Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => ChooseTestLanguage(

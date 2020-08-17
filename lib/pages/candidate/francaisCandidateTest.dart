@@ -200,6 +200,7 @@ class _FrancaisTestCarouselState extends State<FrancaisTestCarousel> {
           width: width,
           height: height > 600 ? height * 0.70 : height * 0.85,
           child: PageView.builder(
+            //physics: NeverScrollableScrollPhysics(),
             controller: _testFrancaisQuestionsPageController,
             scrollDirection: Axis.horizontal,
             reverse: false,

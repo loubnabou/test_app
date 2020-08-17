@@ -88,7 +88,8 @@ class HomeController extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AuthService auth = Provider.of(context).auth;
-    return FutureBuilder(
+     return CandidateContinueInfo();
+    /*return FutureBuilder(
         future: SharedPreferences.getInstance(),
         builder: (BuildContext context, AsyncSnapshot snapshotFuture) {
           switch (snapshotFuture.connectionState) {
@@ -137,7 +138,7 @@ class HomeController extends StatelessWidget {
                 }
               }
           }
-        });
+        });*/
   }
 }
 

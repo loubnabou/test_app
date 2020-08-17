@@ -183,7 +183,7 @@ class _CandidateInfoState extends State<CandidateInfo> {
                           ),
                         ),
                         onPressed: () {
-                          Navigator.push(
+                          Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
@@ -194,11 +194,13 @@ class _CandidateInfoState extends State<CandidateInfo> {
                         },
                       ),
                     ),
+                    /*SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.015),
                     FlatButton(
                       child: Text(
-                        'You are Coach? click Now',
+                        'هل أنت مدرب؟ إضغط هنا',
                         style: TextStyle(
-                            color: Color(0xFF3445FA),
+                            color: Color(0xFFFF0000),
                             fontWeight: FontWeight.bold),
                       ),
                       onPressed: () {
@@ -210,7 +212,7 @@ class _CandidateInfoState extends State<CandidateInfo> {
                           ),
                         );
                       },
-                    ),
+                    ),*/
                     /*FlatButton(
                       child: Text(
                         "Aren't candidate?, be coach and click now",
@@ -258,7 +260,7 @@ class _CandidateInfoState extends State<CandidateInfo> {
 
     QuerySnapshot querySnapshot =
         await Firestore.instance.collection("Users").getDocuments();
-        
+
     for (int i = 0; i < querySnapshot.documents.length; i++) {
       var a = querySnapshot.documents[i];
       if ((a.data['user'])['userType'] == 'candidate') {
@@ -286,7 +288,7 @@ class _CandidateInfoState extends State<CandidateInfo> {
             final value = 'candidate';
             prefs.setString(key, value);
 
-            Navigator.push(
+            Navigator.pushReplacement(
               context,
               MaterialPageRoute(
                 builder: (context) => WelcomeCandidateScreen(
